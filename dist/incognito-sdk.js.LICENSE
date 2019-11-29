@@ -1,0 +1,1743 @@
+/*!***********************!*\
+  !*** ./lib/base58.js ***!
+  \***********************/
+
+/*! exports provided: checkEncode, checkDecode, checkSumFirst4Bytes */
+
+/*! safe-buffer */
+
+/*! ./privacy/utils */
+
+/*!*********************!*\
+  !*** ./lib/coin.js ***!
+  \*********************/
+
+/*! exports provided: Coin */
+
+/*!*****************************!*\
+  !*** ./lib/committeekey.js ***!
+  \*****************************/
+
+/*! exports provided: generateCommitteeKeyFromHashPrivateKey, generateBLSPubKeyB58CheckEncodeFromSeed */
+
+/*! ./privacy/ecdsa */
+
+/*! ./privacy/bls */
+
+/*! ./base58.js */
+
+/*! ./constants */
+
+/*! circular-json */
+
+/*! ./common */
+
+/*!***********************!*\
+  !*** ./lib/common.js ***!
+  \***********************/
+
+/*! exports provided: getShardIDFromLastByte, newHashFromStr, convertHashToStr, hexStringToByte, byteToHexString, base64ArrayBuffer */
+
+/*! ./wallet/wallet */
+
+/*!**************************!*\
+  !*** ./lib/constants.js ***!
+  \**************************/
+
+/*! exports provided: NUM_COIN_PROPERTIES, NUM_PROOF_PROPERTIES, ENCODE_VERSION, SIG_PUB_KEY_SIZE, SIG_NO_PRIVACY_SIZE, SIG_PRIVACY_SIZE, SPENDING_KEY_SIZE, PUBLIC_KEY_SIZE, PAYMENT_ADDR_SIZE, TRANSMISSION_KEY_SIZE, VIEWING_KEY_SIZE, ENCRYPTED_RANDOMNESS_SIZE, ENCRYPTED_SYM_KEY_SIZE, ELGAMAL_CIPHERTEXT_SIZE, AES_BLOCK_SIZE, HASH_SIZE, INPUT_COINS_NO_PRIVACY_SIZE, OUTPUT_COINS_NO_PRIVACY_SIZE, INPUT_COINS_PRIVACY_SIZE, OUTPUT_COINS_PRIVACY_SIZE, ED25519_KEY_SIZE */
+
+/*!*****************************!*\
+  !*** ./lib/errorhandler.js ***!
+  \*****************************/
+
+/*! exports provided: CustomError, ErrorObject */
+
+/*!********************!*\
+  !*** ./lib/key.js ***!
+  \********************/
+
+/*! exports provided: GeneratePrivateKey, GeneratePublicKey, GenerateTransmissionKey, GenerateReceivingKey, PaymentAddress, ViewingKey, PaymentInfo */
+
+/*!***********************!*\
+  !*** ./lib/keySet.js ***!
+  \***********************/
+
+/*! exports provided: KeySet */
+
+/*! ./key */
+
+/*!*****************************!*\
+  !*** ./lib/paymentproof.js ***!
+  \*****************************/
+
+/*! exports provided: estimateProofSize */
+
+/*! ./privacy/constants */
+
+/*!****************************!*\
+  !*** ./lib/privacy/bls.js ***!
+  \****************************/
+
+/*! exports provided: generateBLSKeyPair */
+
+/*! ./utils */
+
+/*!**********************************!*\
+  !*** ./lib/privacy/constants.js ***!
+  \**********************************/
+
+/*! exports provided: CM_RING_SIZE, CM_RING_SIZE_EXP, MAX_EXP, ONE_OF_MANY_PROOF_SIZE, SN_PRIVACY_PROOF_SIZE, SN_NO_PRIVACY_PROOF_SIZE, ED25519_KEY_SIZE, PC_CAPACITY, SK, VALUE, SND, SHARD_ID, RAND, FULL, UINT64_SIZE */
+
+/*!******************************!*\
+  !*** ./lib/privacy/ecdsa.js ***!
+  \******************************/
+
+/*! exports provided: generateECDSAKeyPair */
+
+/*! elliptic */
+
+/*!*****************************************!*\
+  !*** ./lib/privacy/hybridEncryption.js ***!
+  \*****************************************/
+
+/*! exports provided: hybridEncryption, hybridDecryption */
+
+/*!**********************************!*\
+  !*** ./lib/privacy/sjcl/sjcl.js ***!
+  \**********************************/
+
+/*! no static exports found */
+
+/*! crypto */
+
+/*!******************************!*\
+  !*** ./lib/privacy/utils.js ***!
+  \******************************/
+
+/*! exports provided: randScalar, addPaddingBigInt, intToByteArr, randBytes, checkDuplicateBigIntArray, convertIntToBinary, convertUint8ArrayToArray, stringToBytes, hashSha3BytesToBytes, setRandBytesFunc, base64Decode, base64Encode, convertBinaryToInt, hashKeccakBytesToBytes, toHexString, pad, bytesToString */
+
+/*! ./sjcl/sjcl */
+
+/*! sha3 */
+
+/*! base64-js */
+
+/*! bn.js */
+
+/*! ./../../node_modules/node-libs-browser/node_modules/buffer/index.js */
+
+/*!************************************!*\
+  !*** ./lib/rpcclient/rpcclient.js ***!
+  \************************************/
+
+/*! exports provided: RpcClient */
+
+/*! ./rpchttpservice */
+
+/*! ../base58 */
+
+/*! ../privacy/utils */
+
+/*! ../constants */
+
+/*! ../errorhandler */
+
+/*! ../wallet/constants */
+
+/*!*****************************************!*\
+  !*** ./lib/rpcclient/rpchttpservice.js ***!
+  \*****************************************/
+
+/*! exports provided: RPCHttpService */
+
+/*! axios */
+
+/*!*****************************!*\
+  !*** ./lib/tx/constants.js ***!
+  \*****************************/
+
+/*! exports provided: TxNormalType, TxSalaryType, TxCustomTokenType, TxCustomTokenPrivacyType, CustomTokenInit, CustomTokenTransfer, TxVersion, MaxInputNumberForDefragment, MaxInfoSize */
+
+/*!*************************************!*\
+  !*** ./lib/tx/txcustomtokendata.js ***!
+  \*************************************/
+
+/*! exports provided: CustomTokenParamTx */
+
+/*!**************************************!*\
+  !*** ./lib/tx/txprivacytokendata.js ***!
+  \**************************************/
+
+/*! exports provided: PrivacyTokenParamTx */
+
+/*!*************************!*\
+  !*** ./lib/tx/utils.js ***!
+  \*************************/
+
+/*! exports provided: prepareInputForTx, prepareInputForTxPrivacyToken, chooseBestCoinToSpent, cloneInputCoinJsonArray, estimateFee, getEstimateFee, getEstimateFeeForPToken, estimateTxSize, getUnspentCoinExceptSpendingCoin, getUnspentCoin, getMaxWithdrawAmount, newParamInitTx, newParamInitPrivacyTokenTx, prepareInputForReplaceTxNormal, prepareInputForReplaceTxPrivacyToken */
+
+/*! ../wallet/hdwallet */
+
+/*! ../paymentproof */
+
+/*! ../tx/txcustomtokendata */
+
+/*! ../tx/txprivacytokendata */
+
+/*! ../key */
+
+/*! ../tx/constants */
+
+/*! ../privacy/constants */
+
+/*! ../coin */
+
+/*! ../wallet/wallet */
+
+/*!*************************************!*\
+  !*** ./lib/wallet/accountWallet.js ***!
+  \*************************************/
+
+/*! exports provided: AccountWallet */
+
+/*! ./hdwallet */
+
+/*! ../tx/utils */
+
+/*! ./wallet */
+
+/*! ./history */
+
+/*! crypto-js */
+
+/*! ../common */
+
+/*! ../committeekey */
+
+/*!*********************************!*\
+  !*** ./lib/wallet/constants.js ***!
+  \*********************************/
+
+/*! exports provided: PriKeyType, PaymentAddressType, ReadonlyKeyType, PublicKeyType, PriKeySerializeSize, PaymentAddrSerializeSize, ReadonlyKeySerializeSize, PublicKeySerializeSize, FailedTx, SuccessTx, ConfirmedTx, MetaStakingBeacon, MetaStakingShard, ShardStakingType, BeaconStakingType, MaxTxSize, ChildNumberSize, ChainCodeSize, PercentFeeToReplaceTx, PrivacyUnit, NanoUnit, BurnAddress, BurningRequestMeta, WithDrawRewardRequestMeta, PRVID, NoStakeStatus, CandidatorStatus, ValidatorStatus, PDEContributionMeta, PDETradeRequestMeta, PDETradeResponseMeta, PDEWithdrawalRequestMeta, PDEWithdrawalResponseMeta, PRVIDSTR, PDEPOOLKEY, PriKeySerializeAddCheckSumSize, PaymentAddrSerializeAddCheckSumSize, ReadonlyKeySerializeAddCheckSumSize, MenmonicWordLen, MaxSizeInfoCoin, StopAutoStakingMeta */
+
+/*!********************************!*\
+  !*** ./lib/wallet/hdwallet.js ***!
+  \********************************/
+
+/*! exports provided: KeyWallet, NewMasterKey, wordArrayToByteArray, wordToByteArray, byteArrayToWordArray */
+
+/*! ../keySet */
+
+/*!*******************************!*\
+  !*** ./lib/wallet/history.js ***!
+  \*******************************/
+
+/*! exports provided: TxHistoryInfo */
+
+/*!********************************!*\
+  !*** ./lib/wallet/mnemonic.js ***!
+  \********************************/
+
+/*! exports provided: MnemonicGenerator */
+
+/*! ./wordlist */
+
+/*! pbkdf2 */
+
+/*!*****************************!*\
+  !*** ./lib/wallet/utils.js ***!
+  \*****************************/
+
+/*! exports provided: addChecksumToBytes, toPRV, toNanoPRV, encryptMessageOutCoin, decryptMessageOutCoin */
+
+/*! ../privacy/hybridEncryption */
+
+/*!******************************!*\
+  !*** ./lib/wallet/wallet.js ***!
+  \******************************/
+
+/*! exports provided: Wallet, AccountWallet, DefaultStorage, TxHistoryInfo, RpcClient, PaymentInfo, KeyWallet, FailedTx, SuccessTx, ConfirmedTx, MetaStakingBeacon, MetaStakingShard, checkEncode, getEstimateFee, getEstimateFeeForPToken, getMaxWithdrawAmount, toNanoPRV, toPRV, BurnAddress, getShardIDFromLastByte, generateECDSAKeyPair, generateBLSKeyPair, RPCHttpService, BurningRequestMeta, WithDrawRewardRequestMeta, PDEContributionMeta, PDETradeRequestMeta, PDEWithdrawalRequestMeta, hybridEncryption, hybridDecryption, encryptMessageOutCoin, decryptMessageOutCoin, constants */
+
+/*! ./mnemonic */
+
+/*! ../rpcclient/rpcclient */
+
+/*! ../rpcclient/rpchttpservice */
+
+/*! ./accountWallet */
+
+/*! ../privacy/ecdsa */
+
+/*! ../privacy/bls */
+
+/*!********************************!*\
+  !*** ./lib/wallet/wordlist.js ***!
+  \********************************/
+
+/*! exports provided: newWordList */
+
+/*!******************************************!*\
+  !*** ./node_modules/asn1.js/lib/asn1.js ***!
+  \******************************************/
+
+/*! ./asn1/api */
+
+/*! ./asn1/base */
+
+/*! ./asn1/constants */
+
+/*! ./asn1/decoders */
+
+/*! ./asn1/encoders */
+
+/*!**********************************************!*\
+  !*** ./node_modules/asn1.js/lib/asn1/api.js ***!
+  \**********************************************/
+
+/*! ../asn1 */
+
+/*! inherits */
+
+/*! vm */
+
+/*!******************************************************!*\
+  !*** ./node_modules/asn1.js/lib/asn1/base/buffer.js ***!
+  \******************************************************/
+
+/*! ../base */
+
+/*! buffer */
+
+/*!*****************************************************!*\
+  !*** ./node_modules/asn1.js/lib/asn1/base/index.js ***!
+  \*****************************************************/
+
+/*! ./reporter */
+
+/*! ./buffer */
+
+/*! ./node */
+
+/*!****************************************************!*\
+  !*** ./node_modules/asn1.js/lib/asn1/base/node.js ***!
+  \****************************************************/
+
+/*! minimalistic-assert */
+
+/*!********************************************************!*\
+  !*** ./node_modules/asn1.js/lib/asn1/base/reporter.js ***!
+  \********************************************************/
+
+/*!********************************************************!*\
+  !*** ./node_modules/asn1.js/lib/asn1/constants/der.js ***!
+  \********************************************************/
+
+/*!**********************************************************!*\
+  !*** ./node_modules/asn1.js/lib/asn1/constants/index.js ***!
+  \**********************************************************/
+
+/*! ./der */
+
+/*!*******************************************************!*\
+  !*** ./node_modules/asn1.js/lib/asn1/decoders/der.js ***!
+  \*******************************************************/
+
+/*! ../../asn1 */
+
+/*!*********************************************************!*\
+  !*** ./node_modules/asn1.js/lib/asn1/decoders/index.js ***!
+  \*********************************************************/
+
+/*! ./pem */
+
+/*!*******************************************************!*\
+  !*** ./node_modules/asn1.js/lib/asn1/decoders/pem.js ***!
+  \*******************************************************/
+
+/*!*******************************************************!*\
+  !*** ./node_modules/asn1.js/lib/asn1/encoders/der.js ***!
+  \*******************************************************/
+
+/*!*********************************************************!*\
+  !*** ./node_modules/asn1.js/lib/asn1/encoders/index.js ***!
+  \*********************************************************/
+
+/*!*******************************************************!*\
+  !*** ./node_modules/asn1.js/lib/asn1/encoders/pem.js ***!
+  \*******************************************************/
+
+/*!*************************************!*\
+  !*** ./node_modules/axios/index.js ***!
+  \*************************************/
+
+/*! ./lib/axios */
+
+/*!************************************************!*\
+  !*** ./node_modules/axios/lib/adapters/xhr.js ***!
+  \************************************************/
+
+/*! ./../utils */
+
+/*! ./../core/settle */
+
+/*! ./../helpers/buildURL */
+
+/*! ./../helpers/parseHeaders */
+
+/*! ./../helpers/isURLSameOrigin */
+
+/*! ../core/createError */
+
+/*! ./../helpers/cookies */
+
+/*!*****************************************!*\
+  !*** ./node_modules/axios/lib/axios.js ***!
+  \*****************************************/
+
+/*! ./helpers/bind */
+
+/*! ./core/Axios */
+
+/*! ./core/mergeConfig */
+
+/*! ./defaults */
+
+/*! ./cancel/Cancel */
+
+/*! ./cancel/CancelToken */
+
+/*! ./cancel/isCancel */
+
+/*! ./helpers/spread */
+
+/*!*************************************************!*\
+  !*** ./node_modules/axios/lib/cancel/Cancel.js ***!
+  \*************************************************/
+
+/*!******************************************************!*\
+  !*** ./node_modules/axios/lib/cancel/CancelToken.js ***!
+  \******************************************************/
+
+/*! ./Cancel */
+
+/*!***************************************************!*\
+  !*** ./node_modules/axios/lib/cancel/isCancel.js ***!
+  \***************************************************/
+
+/*!**********************************************!*\
+  !*** ./node_modules/axios/lib/core/Axios.js ***!
+  \**********************************************/
+
+/*! ../helpers/buildURL */
+
+/*! ./InterceptorManager */
+
+/*! ./dispatchRequest */
+
+/*! ./mergeConfig */
+
+/*!***********************************************************!*\
+  !*** ./node_modules/axios/lib/core/InterceptorManager.js ***!
+  \***********************************************************/
+
+/*!****************************************************!*\
+  !*** ./node_modules/axios/lib/core/createError.js ***!
+  \****************************************************/
+
+/*! ./enhanceError */
+
+/*!********************************************************!*\
+  !*** ./node_modules/axios/lib/core/dispatchRequest.js ***!
+  \********************************************************/
+
+/*! ./transformData */
+
+/*! ../cancel/isCancel */
+
+/*! ../defaults */
+
+/*! ./../helpers/isAbsoluteURL */
+
+/*! ./../helpers/combineURLs */
+
+/*!*****************************************************!*\
+  !*** ./node_modules/axios/lib/core/enhanceError.js ***!
+  \*****************************************************/
+
+/*!****************************************************!*\
+  !*** ./node_modules/axios/lib/core/mergeConfig.js ***!
+  \****************************************************/
+
+/*! ../utils */
+
+/*!***********************************************!*\
+  !*** ./node_modules/axios/lib/core/settle.js ***!
+  \***********************************************/
+
+/*! ./createError */
+
+/*!******************************************************!*\
+  !*** ./node_modules/axios/lib/core/transformData.js ***!
+  \******************************************************/
+
+/*!********************************************!*\
+  !*** ./node_modules/axios/lib/defaults.js ***!
+  \********************************************/
+
+/*! ./helpers/normalizeHeaderName */
+
+/*! ./adapters/http */
+
+/*! ./adapters/xhr */
+
+/*! ./../../process/browser.js */
+
+/*!************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/bind.js ***!
+  \************************************************/
+
+/*!****************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/buildURL.js ***!
+  \****************************************************/
+
+/*!*******************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/combineURLs.js ***!
+  \*******************************************************/
+
+/*!***************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/cookies.js ***!
+  \***************************************************/
+
+/*!*********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/isAbsoluteURL.js ***!
+  \*********************************************************/
+
+/*!***********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/isURLSameOrigin.js ***!
+  \***********************************************************/
+
+/*!***************************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/normalizeHeaderName.js ***!
+  \***************************************************************/
+
+/*!********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/parseHeaders.js ***!
+  \********************************************************/
+
+/*!**************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/spread.js ***!
+  \**************************************************/
+
+/*!*****************************************!*\
+  !*** ./node_modules/axios/lib/utils.js ***!
+  \*****************************************/
+
+/*! is-buffer */
+
+/*!************************************************************!*\
+  !*** ./node_modules/axios/node_modules/is-buffer/index.js ***!
+  \************************************************************/
+
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+/*!*****************************************!*\
+  !*** ./node_modules/base64-js/index.js ***!
+  \*****************************************/
+
+/*!**************************************!*\
+  !*** ./node_modules/bn.js/lib/bn.js ***!
+  \**************************************/
+
+/*! ./../../webpack/buildin/module.js */
+
+/*!***************************************!*\
+  !*** ./node_modules/brorand/index.js ***!
+  \***************************************/
+
+/*!********************************************!*\
+  !*** ./node_modules/browserify-aes/aes.js ***!
+  \********************************************/
+
+/*!***************************************************!*\
+  !*** ./node_modules/browserify-aes/authCipher.js ***!
+  \***************************************************/
+
+/*! ./aes */
+
+/*! cipher-base */
+
+/*! ./ghash */
+
+/*! buffer-xor */
+
+/*! ./incr32 */
+
+/*!************************************************!*\
+  !*** ./node_modules/browserify-aes/browser.js ***!
+  \************************************************/
+
+/*! ./encrypter */
+
+/*! ./decrypter */
+
+/*! ./modes/list.json */
+
+/*!**************************************************!*\
+  !*** ./node_modules/browserify-aes/decrypter.js ***!
+  \**************************************************/
+
+/*! ./authCipher */
+
+/*! ./modes */
+
+/*! ./streamCipher */
+
+/*! evp_bytestokey */
+
+/*!**************************************************!*\
+  !*** ./node_modules/browserify-aes/encrypter.js ***!
+  \**************************************************/
+
+/*!**********************************************!*\
+  !*** ./node_modules/browserify-aes/ghash.js ***!
+  \**********************************************/
+
+/*!***********************************************!*\
+  !*** ./node_modules/browserify-aes/incr32.js ***!
+  \***********************************************/
+
+/*!**************************************************!*\
+  !*** ./node_modules/browserify-aes/modes/cbc.js ***!
+  \**************************************************/
+
+/*!**************************************************!*\
+  !*** ./node_modules/browserify-aes/modes/cfb.js ***!
+  \**************************************************/
+
+/*!***************************************************!*\
+  !*** ./node_modules/browserify-aes/modes/cfb1.js ***!
+  \***************************************************/
+
+/*!***************************************************!*\
+  !*** ./node_modules/browserify-aes/modes/cfb8.js ***!
+  \***************************************************/
+
+/*!**************************************************!*\
+  !*** ./node_modules/browserify-aes/modes/ctr.js ***!
+  \**************************************************/
+
+/*! ../incr32 */
+
+/*!**************************************************!*\
+  !*** ./node_modules/browserify-aes/modes/ecb.js ***!
+  \**************************************************/
+
+/*!****************************************************!*\
+  !*** ./node_modules/browserify-aes/modes/index.js ***!
+  \****************************************************/
+
+/*! ./ecb */
+
+/*! ./cbc */
+
+/*! ./cfb */
+
+/*! ./cfb8 */
+
+/*! ./cfb1 */
+
+/*! ./ofb */
+
+/*! ./ctr */
+
+/*! ./list.json */
+
+/*!*****************************************************!*\
+  !*** ./node_modules/browserify-aes/modes/list.json ***!
+  \*****************************************************/
+
+/*! exports provided: aes-128-ecb, aes-192-ecb, aes-256-ecb, aes-128-cbc, aes-192-cbc, aes-256-cbc, aes128, aes192, aes256, aes-128-cfb, aes-192-cfb, aes-256-cfb, aes-128-cfb8, aes-192-cfb8, aes-256-cfb8, aes-128-cfb1, aes-192-cfb1, aes-256-cfb1, aes-128-ofb, aes-192-ofb, aes-256-ofb, aes-128-ctr, aes-192-ctr, aes-256-ctr, aes-128-gcm, aes-192-gcm, aes-256-gcm, default */
+
+/*!**************************************************!*\
+  !*** ./node_modules/browserify-aes/modes/ofb.js ***!
+  \**************************************************/
+
+/*! ./../../node-libs-browser/node_modules/buffer/index.js */
+
+/*!*****************************************************!*\
+  !*** ./node_modules/browserify-aes/streamCipher.js ***!
+  \*****************************************************/
+
+/*!***************************************************!*\
+  !*** ./node_modules/browserify-cipher/browser.js ***!
+  \***************************************************/
+
+/*! browserify-des */
+
+/*! browserify-aes/browser */
+
+/*! browserify-aes/modes */
+
+/*! browserify-des/modes */
+
+/*!**********************************************!*\
+  !*** ./node_modules/browserify-des/index.js ***!
+  \**********************************************/
+
+/*! des.js */
+
+/*!**********************************************!*\
+  !*** ./node_modules/browserify-des/modes.js ***!
+  \**********************************************/
+
+/*!**********************************************!*\
+  !*** ./node_modules/browserify-rsa/index.js ***!
+  \**********************************************/
+
+/*! randombytes */
+
+/*! ./../node-libs-browser/node_modules/buffer/index.js */
+
+/*!***********************************************!*\
+  !*** ./node_modules/browserify-sign/algos.js ***!
+  \***********************************************/
+
+/*! ./browser/algorithms.json */
+
+/*!**************************************************************!*\
+  !*** ./node_modules/browserify-sign/browser/algorithms.json ***!
+  \**************************************************************/
+
+/*! exports provided: sha224WithRSAEncryption, RSA-SHA224, sha256WithRSAEncryption, RSA-SHA256, sha384WithRSAEncryption, RSA-SHA384, sha512WithRSAEncryption, RSA-SHA512, RSA-SHA1, ecdsa-with-SHA1, sha256, sha224, sha384, sha512, DSA-SHA, DSA-SHA1, DSA, DSA-WITH-SHA224, DSA-SHA224, DSA-WITH-SHA256, DSA-SHA256, DSA-WITH-SHA384, DSA-SHA384, DSA-WITH-SHA512, DSA-SHA512, DSA-RIPEMD160, ripemd160WithRSA, RSA-RIPEMD160, md5WithRSAEncryption, RSA-MD5, default */
+
+/*!**********************************************************!*\
+  !*** ./node_modules/browserify-sign/browser/curves.json ***!
+  \**********************************************************/
+
+/*! exports provided: 1.3.132.0.10, 1.3.132.0.33, 1.2.840.10045.3.1.1, 1.2.840.10045.3.1.7, 1.3.132.0.34, 1.3.132.0.35, default */
+
+/*!*******************************************************!*\
+  !*** ./node_modules/browserify-sign/browser/index.js ***!
+  \*******************************************************/
+
+/*! create-hash */
+
+/*! stream */
+
+/*! ./sign */
+
+/*! ./verify */
+
+/*! ./algorithms.json */
+
+/*!******************************************************!*\
+  !*** ./node_modules/browserify-sign/browser/sign.js ***!
+  \******************************************************/
+
+/*! create-hmac */
+
+/*! browserify-rsa */
+
+/*! parse-asn1 */
+
+/*! ./curves.json */
+
+/*!********************************************************!*\
+  !*** ./node_modules/browserify-sign/browser/verify.js ***!
+  \********************************************************/
+
+/*!******************************************!*\
+  !*** ./node_modules/buffer-xor/index.js ***!
+  \******************************************/
+
+/*!*******************************************!*\
+  !*** ./node_modules/cipher-base/index.js ***!
+  \*******************************************/
+
+/*! string_decoder */
+
+/*!****************************************************************!*\
+  !*** ./node_modules/circular-json/build/circular-json.node.js ***!
+  \****************************************************************/
+
+/*!
+Copyright (C) 2013-2017 by Andrea Giammarchi - @WebReflection
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+*/
+
+/*!***********************************************!*\
+  !*** ./node_modules/core-util-is/lib/util.js ***!
+  \***********************************************/
+
+/*!*********************************************!*\
+  !*** ./node_modules/create-ecdh/browser.js ***!
+  \*********************************************/
+
+/*!*********************************************!*\
+  !*** ./node_modules/create-hash/browser.js ***!
+  \*********************************************/
+
+/*! md5.js */
+
+/*! ripemd160 */
+
+/*! sha.js */
+
+/*!*****************************************!*\
+  !*** ./node_modules/create-hash/md5.js ***!
+  \*****************************************/
+
+/*!*********************************************!*\
+  !*** ./node_modules/create-hmac/browser.js ***!
+  \*********************************************/
+
+/*! ./legacy */
+
+/*! create-hash/md5 */
+
+/*!********************************************!*\
+  !*** ./node_modules/create-hmac/legacy.js ***!
+  \********************************************/
+
+/*!*************************************************!*\
+  !*** ./node_modules/crypto-browserify/index.js ***!
+  \*************************************************/
+
+/*! browserify-sign/algos */
+
+/*! browserify-cipher */
+
+/*! diffie-hellman */
+
+/*! browserify-sign */
+
+/*! create-ecdh */
+
+/*! public-encrypt */
+
+/*! randomfill */
+
+/*!***************************************!*\
+  !*** ./node_modules/crypto-js/aes.js ***!
+  \***************************************/
+
+/*! ./core */
+
+/*! ./enc-base64 */
+
+/*! ./md5 */
+
+/*! ./evpkdf */
+
+/*! ./cipher-core */
+
+/*!***********************************************!*\
+  !*** ./node_modules/crypto-js/cipher-core.js ***!
+  \***********************************************/
+
+/*!****************************************!*\
+  !*** ./node_modules/crypto-js/core.js ***!
+  \****************************************/
+
+/*!**********************************************!*\
+  !*** ./node_modules/crypto-js/enc-base64.js ***!
+  \**********************************************/
+
+/*!*********************************************!*\
+  !*** ./node_modules/crypto-js/enc-utf16.js ***!
+  \*********************************************/
+
+/*!******************************************!*\
+  !*** ./node_modules/crypto-js/evpkdf.js ***!
+  \******************************************/
+
+/*! ./sha1 */
+
+/*! ./hmac */
+
+/*!**********************************************!*\
+  !*** ./node_modules/crypto-js/format-hex.js ***!
+  \**********************************************/
+
+/*!****************************************!*\
+  !*** ./node_modules/crypto-js/hmac.js ***!
+  \****************************************/
+
+/*!*****************************************!*\
+  !*** ./node_modules/crypto-js/index.js ***!
+  \*****************************************/
+
+/*! ./x64-core */
+
+/*! ./lib-typedarrays */
+
+/*! ./enc-utf16 */
+
+/*! ./sha256 */
+
+/*! ./sha224 */
+
+/*! ./sha512 */
+
+/*! ./sha384 */
+
+/*! ./sha3 */
+
+/*! ./ripemd160 */
+
+/*! ./pbkdf2 */
+
+/*! ./mode-cfb */
+
+/*! ./mode-ctr */
+
+/*! ./mode-ctr-gladman */
+
+/*! ./mode-ofb */
+
+/*! ./mode-ecb */
+
+/*! ./pad-ansix923 */
+
+/*! ./pad-iso10126 */
+
+/*! ./pad-iso97971 */
+
+/*! ./pad-zeropadding */
+
+/*! ./pad-nopadding */
+
+/*! ./format-hex */
+
+/*! ./tripledes */
+
+/*! ./rc4 */
+
+/*! ./rabbit */
+
+/*! ./rabbit-legacy */
+
+/*!***************************************************!*\
+  !*** ./node_modules/crypto-js/lib-typedarrays.js ***!
+  \***************************************************/
+
+/*!***************************************!*\
+  !*** ./node_modules/crypto-js/md5.js ***!
+  \***************************************/
+
+/*!********************************************!*\
+  !*** ./node_modules/crypto-js/mode-cfb.js ***!
+  \********************************************/
+
+/*!****************************************************!*\
+  !*** ./node_modules/crypto-js/mode-ctr-gladman.js ***!
+  \****************************************************/
+
+/** @preserve
+	 * Counter block mode compatible with  Dr Brian Gladman fileenc.c
+	 * derived from CryptoJS.mode.CTR
+	 * Jan Hruby jhruby.web@gmail.com
+	 */
+
+/*!********************************************!*\
+  !*** ./node_modules/crypto-js/mode-ctr.js ***!
+  \********************************************/
+
+/*!********************************************!*\
+  !*** ./node_modules/crypto-js/mode-ecb.js ***!
+  \********************************************/
+
+/*!********************************************!*\
+  !*** ./node_modules/crypto-js/mode-ofb.js ***!
+  \********************************************/
+
+/*!************************************************!*\
+  !*** ./node_modules/crypto-js/pad-ansix923.js ***!
+  \************************************************/
+
+/*!************************************************!*\
+  !*** ./node_modules/crypto-js/pad-iso10126.js ***!
+  \************************************************/
+
+/*!************************************************!*\
+  !*** ./node_modules/crypto-js/pad-iso97971.js ***!
+  \************************************************/
+
+/*!*************************************************!*\
+  !*** ./node_modules/crypto-js/pad-nopadding.js ***!
+  \*************************************************/
+
+/*!***************************************************!*\
+  !*** ./node_modules/crypto-js/pad-zeropadding.js ***!
+  \***************************************************/
+
+/*!******************************************!*\
+  !*** ./node_modules/crypto-js/pbkdf2.js ***!
+  \******************************************/
+
+/*!*************************************************!*\
+  !*** ./node_modules/crypto-js/rabbit-legacy.js ***!
+  \*************************************************/
+
+/*!******************************************!*\
+  !*** ./node_modules/crypto-js/rabbit.js ***!
+  \******************************************/
+
+/*!***************************************!*\
+  !*** ./node_modules/crypto-js/rc4.js ***!
+  \***************************************/
+
+/*!*********************************************!*\
+  !*** ./node_modules/crypto-js/ripemd160.js ***!
+  \*********************************************/
+
+/** @preserve
+	(c) 2012 by Cédric Mesnil. All rights reserved.
+
+	Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+	    - Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+	    - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+	*/
+
+/*!****************************************!*\
+  !*** ./node_modules/crypto-js/sha1.js ***!
+  \****************************************/
+
+/*!******************************************!*\
+  !*** ./node_modules/crypto-js/sha224.js ***!
+  \******************************************/
+
+/*!******************************************!*\
+  !*** ./node_modules/crypto-js/sha256.js ***!
+  \******************************************/
+
+/*!****************************************!*\
+  !*** ./node_modules/crypto-js/sha3.js ***!
+  \****************************************/
+
+/*!******************************************!*\
+  !*** ./node_modules/crypto-js/sha384.js ***!
+  \******************************************/
+
+/*!******************************************!*\
+  !*** ./node_modules/crypto-js/sha512.js ***!
+  \******************************************/
+
+/*!*********************************************!*\
+  !*** ./node_modules/crypto-js/tripledes.js ***!
+  \*********************************************/
+
+/*!********************************************!*\
+  !*** ./node_modules/crypto-js/x64-core.js ***!
+  \********************************************/
+
+/*!****************************************!*\
+  !*** ./node_modules/des.js/lib/des.js ***!
+  \****************************************/
+
+/*! ./des/utils */
+
+/*! ./des/cipher */
+
+/*! ./des/des */
+
+/*! ./des/cbc */
+
+/*! ./des/ede */
+
+/*!********************************************!*\
+  !*** ./node_modules/des.js/lib/des/cbc.js ***!
+  \********************************************/
+
+/*!***********************************************!*\
+  !*** ./node_modules/des.js/lib/des/cipher.js ***!
+  \***********************************************/
+
+/*!********************************************!*\
+  !*** ./node_modules/des.js/lib/des/des.js ***!
+  \********************************************/
+
+/*! ../des */
+
+/*!********************************************!*\
+  !*** ./node_modules/des.js/lib/des/ede.js ***!
+  \********************************************/
+
+/*!**********************************************!*\
+  !*** ./node_modules/des.js/lib/des/utils.js ***!
+  \**********************************************/
+
+/*!************************************************!*\
+  !*** ./node_modules/diffie-hellman/browser.js ***!
+  \************************************************/
+
+/*! ./lib/generatePrime */
+
+/*! ./lib/primes.json */
+
+/*! ./lib/dh */
+
+/*!***********************************************!*\
+  !*** ./node_modules/diffie-hellman/lib/dh.js ***!
+  \***********************************************/
+
+/*! miller-rabin */
+
+/*! ./generatePrime */
+
+/*!**********************************************************!*\
+  !*** ./node_modules/diffie-hellman/lib/generatePrime.js ***!
+  \**********************************************************/
+
+/*!*****************************************************!*\
+  !*** ./node_modules/diffie-hellman/lib/primes.json ***!
+  \*****************************************************/
+
+/*! exports provided: modp1, modp2, modp5, modp14, modp15, modp16, modp17, modp18, default */
+
+/*!***********************************************!*\
+  !*** ./node_modules/elliptic/lib/elliptic.js ***!
+  \***********************************************/
+
+/*! ../package.json */
+
+/*! ./elliptic/utils */
+
+/*! brorand */
+
+/*! ./elliptic/curve */
+
+/*! ./elliptic/curves */
+
+/*! ./elliptic/ec */
+
+/*! ./elliptic/eddsa */
+
+/*!**********************************************************!*\
+  !*** ./node_modules/elliptic/lib/elliptic/curve/base.js ***!
+  \**********************************************************/
+
+/*! ../../elliptic */
+
+/*!*************************************************************!*\
+  !*** ./node_modules/elliptic/lib/elliptic/curve/edwards.js ***!
+  \*************************************************************/
+
+/*! ../curve */
+
+/*!***********************************************************!*\
+  !*** ./node_modules/elliptic/lib/elliptic/curve/index.js ***!
+  \***********************************************************/
+
+/*! ./base */
+
+/*! ./short */
+
+/*! ./mont */
+
+/*! ./edwards */
+
+/*!**********************************************************!*\
+  !*** ./node_modules/elliptic/lib/elliptic/curve/mont.js ***!
+  \**********************************************************/
+
+/*!***********************************************************!*\
+  !*** ./node_modules/elliptic/lib/elliptic/curve/short.js ***!
+  \***********************************************************/
+
+/*!******************************************************!*\
+  !*** ./node_modules/elliptic/lib/elliptic/curves.js ***!
+  \******************************************************/
+
+/*! hash.js */
+
+/*! ../elliptic */
+
+/*! ./precomputed/secp256k1 */
+
+/*!********************************************************!*\
+  !*** ./node_modules/elliptic/lib/elliptic/ec/index.js ***!
+  \********************************************************/
+
+/*! hmac-drbg */
+
+/*! ./signature */
+
+/*!******************************************************!*\
+  !*** ./node_modules/elliptic/lib/elliptic/ec/key.js ***!
+  \******************************************************/
+
+/*!************************************************************!*\
+  !*** ./node_modules/elliptic/lib/elliptic/ec/signature.js ***!
+  \************************************************************/
+
+/*!***********************************************************!*\
+  !*** ./node_modules/elliptic/lib/elliptic/eddsa/index.js ***!
+  \***********************************************************/
+
+/*!*********************************************************!*\
+  !*** ./node_modules/elliptic/lib/elliptic/eddsa/key.js ***!
+  \*********************************************************/
+
+/*!***************************************************************!*\
+  !*** ./node_modules/elliptic/lib/elliptic/eddsa/signature.js ***!
+  \***************************************************************/
+
+/*!*********************************************************************!*\
+  !*** ./node_modules/elliptic/lib/elliptic/precomputed/secp256k1.js ***!
+  \*********************************************************************/
+
+/*!*****************************************************!*\
+  !*** ./node_modules/elliptic/lib/elliptic/utils.js ***!
+  \*****************************************************/
+
+/*! minimalistic-crypto-utils */
+
+/*!********************************************!*\
+  !*** ./node_modules/elliptic/package.json ***!
+  \********************************************/
+
+/*! exports provided: name, version, description, main, files, scripts, repository, keywords, author, license, bugs, homepage, devDependencies, dependencies, default */
+
+/*!***************************************!*\
+  !*** ./node_modules/events/events.js ***!
+  \***************************************/
+
+/*!**********************************************!*\
+  !*** ./node_modules/evp_bytestokey/index.js ***!
+  \**********************************************/
+
+/*!*****************************************!*\
+  !*** ./node_modules/hash-base/index.js ***!
+  \*****************************************/
+
+/*!******************************************!*\
+  !*** ./node_modules/hash.js/lib/hash.js ***!
+  \******************************************/
+
+/*! ./hash/utils */
+
+/*! ./hash/common */
+
+/*! ./hash/sha */
+
+/*! ./hash/ripemd */
+
+/*! ./hash/hmac */
+
+/*!*************************************************!*\
+  !*** ./node_modules/hash.js/lib/hash/common.js ***!
+  \*************************************************/
+
+/*!***********************************************!*\
+  !*** ./node_modules/hash.js/lib/hash/hmac.js ***!
+  \***********************************************/
+
+/*!*************************************************!*\
+  !*** ./node_modules/hash.js/lib/hash/ripemd.js ***!
+  \*************************************************/
+
+/*!**********************************************!*\
+  !*** ./node_modules/hash.js/lib/hash/sha.js ***!
+  \**********************************************/
+
+/*! ./sha/1 */
+
+/*! ./sha/224 */
+
+/*! ./sha/256 */
+
+/*! ./sha/384 */
+
+/*! ./sha/512 */
+
+/*!************************************************!*\
+  !*** ./node_modules/hash.js/lib/hash/sha/1.js ***!
+  \************************************************/
+
+/*!**************************************************!*\
+  !*** ./node_modules/hash.js/lib/hash/sha/224.js ***!
+  \**************************************************/
+
+/*! ./256 */
+
+/*!**************************************************!*\
+  !*** ./node_modules/hash.js/lib/hash/sha/256.js ***!
+  \**************************************************/
+
+/*!**************************************************!*\
+  !*** ./node_modules/hash.js/lib/hash/sha/384.js ***!
+  \**************************************************/
+
+/*! ./512 */
+
+/*!**************************************************!*\
+  !*** ./node_modules/hash.js/lib/hash/sha/512.js ***!
+  \**************************************************/
+
+/*!*****************************************************!*\
+  !*** ./node_modules/hash.js/lib/hash/sha/common.js ***!
+  \*****************************************************/
+
+/*!************************************************!*\
+  !*** ./node_modules/hash.js/lib/hash/utils.js ***!
+  \************************************************/
+
+/*!*************************************************!*\
+  !*** ./node_modules/hmac-drbg/lib/hmac-drbg.js ***!
+  \*************************************************/
+
+/*!***************************************!*\
+  !*** ./node_modules/ieee754/index.js ***!
+  \***************************************/
+
+/*!***************************************!*\
+  !*** ./node_modules/indexof/index.js ***!
+  \***************************************/
+
+/*!***************************************************!*\
+  !*** ./node_modules/inherits/inherits_browser.js ***!
+  \***************************************************/
+
+/*!***************************************!*\
+  !*** ./node_modules/isarray/index.js ***!
+  \***************************************/
+
+/*!**************************************!*\
+  !*** ./node_modules/md5.js/index.js ***!
+  \**************************************/
+
+/*! hash-base */
+
+/*!*********************************************!*\
+  !*** ./node_modules/miller-rabin/lib/mr.js ***!
+  \*********************************************/
+
+/*!***************************************************!*\
+  !*** ./node_modules/minimalistic-assert/index.js ***!
+  \***************************************************/
+
+/*!*************************************************************!*\
+  !*** ./node_modules/minimalistic-crypto-utils/lib/utils.js ***!
+  \*************************************************************/
+
+/*!*********************************************************************!*\
+  !*** ./node_modules/node-libs-browser/node_modules/buffer/index.js ***!
+  \*********************************************************************/
+
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @license  MIT
+ */
+
+/*! ieee754 */
+
+/*! isarray */
+
+/*! ./../../../webpack/buildin/global.js */
+
+/*!********************************************!*\
+  !*** ./node_modules/parse-asn1/aesid.json ***!
+  \********************************************/
+
+/*! exports provided: 2.16.840.1.101.3.4.1.1, 2.16.840.1.101.3.4.1.2, 2.16.840.1.101.3.4.1.3, 2.16.840.1.101.3.4.1.4, 2.16.840.1.101.3.4.1.21, 2.16.840.1.101.3.4.1.22, 2.16.840.1.101.3.4.1.23, 2.16.840.1.101.3.4.1.24, 2.16.840.1.101.3.4.1.41, 2.16.840.1.101.3.4.1.42, 2.16.840.1.101.3.4.1.43, 2.16.840.1.101.3.4.1.44, default */
+
+/*!*****************************************!*\
+  !*** ./node_modules/parse-asn1/asn1.js ***!
+  \*****************************************/
+
+/*! asn1.js */
+
+/*! ./certificate */
+
+/*!************************************************!*\
+  !*** ./node_modules/parse-asn1/certificate.js ***!
+  \************************************************/
+
+/*!********************************************!*\
+  !*** ./node_modules/parse-asn1/fixProc.js ***!
+  \********************************************/
+
+/*! browserify-aes */
+
+/*!******************************************!*\
+  !*** ./node_modules/parse-asn1/index.js ***!
+  \******************************************/
+
+/*! ./asn1 */
+
+/*! ./aesid.json */
+
+/*! ./fixProc */
+
+/*!****************************************!*\
+  !*** ./node_modules/pbkdf2/browser.js ***!
+  \****************************************/
+
+/*! ./lib/async */
+
+/*! ./lib/sync */
+
+/*!******************************************!*\
+  !*** ./node_modules/pbkdf2/lib/async.js ***!
+  \******************************************/
+
+/*! ./precondition */
+
+/*! ./default-encoding */
+
+/*! ./sync */
+
+/*! ./../../webpack/buildin/global.js */
+
+/*!*****************************************************!*\
+  !*** ./node_modules/pbkdf2/lib/default-encoding.js ***!
+  \*****************************************************/
+
+/*!*************************************************!*\
+  !*** ./node_modules/pbkdf2/lib/precondition.js ***!
+  \*************************************************/
+
+/*!*************************************************!*\
+  !*** ./node_modules/pbkdf2/lib/sync-browser.js ***!
+  \*************************************************/
+
+/*!****************************************************!*\
+  !*** ./node_modules/process-nextick-args/index.js ***!
+  \****************************************************/
+
+/*! ./../process/browser.js */
+
+/*!*****************************************!*\
+  !*** ./node_modules/process/browser.js ***!
+  \*****************************************/
+
+/*!************************************************!*\
+  !*** ./node_modules/public-encrypt/browser.js ***!
+  \************************************************/
+
+/*! ./publicEncrypt */
+
+/*! ./privateDecrypt */
+
+/*!********************************************!*\
+  !*** ./node_modules/public-encrypt/mgf.js ***!
+  \********************************************/
+
+/*!*******************************************************!*\
+  !*** ./node_modules/public-encrypt/privateDecrypt.js ***!
+  \*******************************************************/
+
+/*! ./mgf */
+
+/*! ./xor */
+
+/*! ./withPublic */
+
+/*!******************************************************!*\
+  !*** ./node_modules/public-encrypt/publicEncrypt.js ***!
+  \******************************************************/
+
+/*!***************************************************!*\
+  !*** ./node_modules/public-encrypt/withPublic.js ***!
+  \***************************************************/
+
+/*!********************************************!*\
+  !*** ./node_modules/public-encrypt/xor.js ***!
+  \********************************************/
+
+/*!*********************************************!*\
+  !*** ./node_modules/randombytes/browser.js ***!
+  \*********************************************/
+
+/*! ./../webpack/buildin/global.js */
+
+/*!********************************************!*\
+  !*** ./node_modules/randomfill/browser.js ***!
+  \********************************************/
+
+/*!********************************************************!*\
+  !*** ./node_modules/readable-stream/duplex-browser.js ***!
+  \********************************************************/
+
+/*! ./lib/_stream_duplex.js */
+
+/*!************************************************************!*\
+  !*** ./node_modules/readable-stream/lib/_stream_duplex.js ***!
+  \************************************************************/
+
+/*! process-nextick-args */
+
+/*! core-util-is */
+
+/*! ./_stream_readable */
+
+/*! ./_stream_writable */
+
+/*!*****************************************************************!*\
+  !*** ./node_modules/readable-stream/lib/_stream_passthrough.js ***!
+  \*****************************************************************/
+
+/*! ./_stream_transform */
+
+/*!**************************************************************!*\
+  !*** ./node_modules/readable-stream/lib/_stream_readable.js ***!
+  \**************************************************************/
+
+/*! events */
+
+/*! ./internal/streams/stream */
+
+/*! util */
+
+/*! ./internal/streams/BufferList */
+
+/*! ./internal/streams/destroy */
+
+/*! ./_stream_duplex */
+
+/*! string_decoder/ */
+
+/*!***************************************************************!*\
+  !*** ./node_modules/readable-stream/lib/_stream_transform.js ***!
+  \***************************************************************/
+
+/*!**************************************************************!*\
+  !*** ./node_modules/readable-stream/lib/_stream_writable.js ***!
+  \**************************************************************/
+
+/*! util-deprecate */
+
+/*! ./../../timers-browserify/main.js */
+
+/*!*************************************************************************!*\
+  !*** ./node_modules/readable-stream/lib/internal/streams/BufferList.js ***!
+  \*************************************************************************/
+
+/*!**********************************************************************!*\
+  !*** ./node_modules/readable-stream/lib/internal/streams/destroy.js ***!
+  \**********************************************************************/
+
+/*!*****************************************************************************!*\
+  !*** ./node_modules/readable-stream/lib/internal/streams/stream-browser.js ***!
+  \*****************************************************************************/
+
+/*!*****************************************************!*\
+  !*** ./node_modules/readable-stream/passthrough.js ***!
+  \*****************************************************/
+
+/*! ./readable */
+
+/*!**********************************************************!*\
+  !*** ./node_modules/readable-stream/readable-browser.js ***!
+  \**********************************************************/
+
+/*! ./lib/_stream_readable.js */
+
+/*! ./lib/_stream_writable.js */
+
+/*! ./lib/_stream_transform.js */
+
+/*! ./lib/_stream_passthrough.js */
+
+/*!***************************************************!*\
+  !*** ./node_modules/readable-stream/transform.js ***!
+  \***************************************************/
+
+/*!**********************************************************!*\
+  !*** ./node_modules/readable-stream/writable-browser.js ***!
+  \**********************************************************/
+
+/*!*****************************************!*\
+  !*** ./node_modules/ripemd160/index.js ***!
+  \*****************************************/
+
+/*!*******************************************!*\
+  !*** ./node_modules/safe-buffer/index.js ***!
+  \*******************************************/
+
+/*!***************************************************!*\
+  !*** ./node_modules/setimmediate/setImmediate.js ***!
+  \***************************************************/
+
+/*!*************************************!*\
+  !*** ./node_modules/sha.js/hash.js ***!
+  \*************************************/
+
+/*!**************************************!*\
+  !*** ./node_modules/sha.js/index.js ***!
+  \**************************************/
+
+/*! ./sha */
+
+/*!************************************!*\
+  !*** ./node_modules/sha.js/sha.js ***!
+  \************************************/
+
+/*! ./hash */
+
+/*!*************************************!*\
+  !*** ./node_modules/sha.js/sha1.js ***!
+  \*************************************/
+
+/*!***************************************!*\
+  !*** ./node_modules/sha.js/sha224.js ***!
+  \***************************************/
+
+/*!***************************************!*\
+  !*** ./node_modules/sha.js/sha256.js ***!
+  \***************************************/
+
+/*!***************************************!*\
+  !*** ./node_modules/sha.js/sha384.js ***!
+  \***************************************/
+
+/*!***************************************!*\
+  !*** ./node_modules/sha.js/sha512.js ***!
+  \***************************************/
+
+/*!************************************!*\
+  !*** ./node_modules/sha3/index.js ***!
+  \************************************/
+
+/*! ./sponge */
+
+/*!*******************************************!*\
+  !*** ./node_modules/sha3/sponge/index.js ***!
+  \*******************************************/
+
+/*! ./permute */
+
+/*!*******************************************************!*\
+  !*** ./node_modules/sha3/sponge/permute/chi/index.js ***!
+  \*******************************************************/
+
+/*! ../copy */
+
+/*!********************************************************!*\
+  !*** ./node_modules/sha3/sponge/permute/copy/index.js ***!
+  \********************************************************/
+
+/*!***************************************************!*\
+  !*** ./node_modules/sha3/sponge/permute/index.js ***!
+  \***************************************************/
+
+/*! ./chi */
+
+/*! ./iota */
+
+/*! ./rho-pi */
+
+/*! ./theta */
+
+/*!********************************************************!*\
+  !*** ./node_modules/sha3/sponge/permute/iota/index.js ***!
+  \********************************************************/
+
+/*! ./round-constants */
+
+/*!************************************************************************!*\
+  !*** ./node_modules/sha3/sponge/permute/iota/round-constants/index.js ***!
+  \************************************************************************/
+
+/*!**********************************************************!*\
+  !*** ./node_modules/sha3/sponge/permute/rho-pi/index.js ***!
+  \**********************************************************/
+
+/*! ./pi-shuffles */
+
+/*! ./rho-offsets */
+
+/*!**********************************************************************!*\
+  !*** ./node_modules/sha3/sponge/permute/rho-pi/pi-shuffles/index.js ***!
+  \**********************************************************************/
+
+/*!**********************************************************************!*\
+  !*** ./node_modules/sha3/sponge/permute/rho-pi/rho-offsets/index.js ***!
+  \**********************************************************************/
+
+/*!*********************************************************!*\
+  !*** ./node_modules/sha3/sponge/permute/theta/index.js ***!
+  \*********************************************************/
+
+/*!*************************************************!*\
+  !*** ./node_modules/stream-browserify/index.js ***!
+  \*************************************************/
+
+/*! readable-stream/readable.js */
+
+/*! readable-stream/writable.js */
+
+/*! readable-stream/duplex.js */
+
+/*! readable-stream/transform.js */
+
+/*! readable-stream/passthrough.js */
+
+/*!***********************************************************!*\
+  !*** ./node_modules/string_decoder/lib/string_decoder.js ***!
+  \***********************************************************/
+
+/*!************************************************!*\
+  !*** ./node_modules/timers-browserify/main.js ***!
+  \************************************************/
+
+/*! setimmediate */
+
+/*!************************************************!*\
+  !*** ./node_modules/util-deprecate/browser.js ***!
+  \************************************************/
+
+/*!*********************************************!*\
+  !*** ./node_modules/vm-browserify/index.js ***!
+  \*********************************************/
+
+/*! indexof */
+
+/*!***********************************!*\
+  !*** (webpack)/buildin/global.js ***!
+  \***********************************/
+
+/*!***********************************!*\
+  !*** (webpack)/buildin/module.js ***!
+  \***********************************/
+
+/*!************************!*\
+  !*** buffer (ignored) ***!
+  \************************/
+
+/*!**********************!*\
+  !*** util (ignored) ***!
+  \**********************/
+
+/*!************************!*\
+  !*** crypto (ignored) ***!
+  \************************/
