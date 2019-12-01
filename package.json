@@ -1,0 +1,31 @@
+{
+  "name": "papp-sdk",
+  "version": "1.0.0",
+  "description": "pApp SDK",
+  "main": "dist/papp-sdk.min.js",
+  "license": "MIT",
+  "scripts": {
+    "prestart": "yarn",
+    "start": "yarn build",
+    "dev": "webpack --watch",
+    "lint": "eslint src",
+    "build": "yarn lint && NODE_ENV='production' webpack --progress",
+    "build:dev": "webpack --progress"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.4",
+    "@babel/node": "^7.7.4",
+    "@babel/polyfill": "^7.7.0",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/register": "^7.7.4",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "eslint": "^6.7.1",
+    "file-loader": "^5.0.2",
+    "nodemon-webpack-plugin": "^4.2.1",
+    "terser-webpack-plugin": "^2.2.1",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-merge": "^4.2.2"
+  }
+}
