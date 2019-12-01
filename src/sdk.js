@@ -46,7 +46,7 @@ async function handleSend({ paymentAddress, amount }) {
   const res = await sdk.sendtx.sendPRV({
     paymentAddress,
     amount,
-    message: `Rolldice pay to user ${amount} PRV`
+    message: `Rolldice pay to user ${amount} nano PRV`
   });
 
   console.debug('Sent successfully', paymentAddress, amount);

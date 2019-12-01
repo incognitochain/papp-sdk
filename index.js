@@ -1,9 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+var cors = require('cors');
 const port = process.env.PORT || 3000;
 const handleBet = require('./src/bet');
 const { getSDK } = require('./src/sdk');
+
+app.use(cors());
 
 // parse application/json
 app.use(bodyParser.json());
