@@ -1,0 +1,227 @@
+html, body {
+  min-height: 100%;
+  height: 100%;
+  max-width: 400px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+html body span {
+  color: white;
+}
+
+html {
+  background-image: url('./assets/bg.png');
+}
+
+button:focus, input[type=button] {
+  border: none;
+  outline:none;
+}
+
+#game-container {
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: calc(100% - 40px);
+}
+
+#balance-container {
+  background: rgba(0,110,223,0.14);
+  border: solid 2px #00E1FF;
+  border-radius: 21px;
+  text-align: center;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+#balance-container > span {
+  font-size: 18px;
+  color: #FFFFFF;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+#balance-container #balance {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+#roll-dice {
+  background-image: url('./assets/dice-6.png');
+  height: 180px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+#choose-roll-dice {
+  height: 40px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.roll-dice-icon {
+  height: 35px;
+  width: 35px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.roll-dice-icon-active {
+  height: 40px;
+  width: 40px;
+  border: solid 2px red;
+  border-radius: 2px;
+}
+
+#choose-roll-dice > div[name='1'] {
+  background-image: url('./assets/dice-icon/1.png');
+}
+
+#choose-roll-dice > div[name='2'] {
+  background-image: url('./assets/dice-icon/2.png');
+}
+
+#choose-roll-dice > div[name='3'] {
+  background-image: url('./assets/dice-icon/3.png');
+}
+
+#choose-roll-dice > div[name='4'] {
+  background-image: url('./assets/dice-icon/4.png');
+}
+
+#choose-roll-dice > div[name='5'] {
+  background-image: url('./assets/dice-icon/5.png');
+}
+
+#choose-roll-dice > div[name='6'] {
+  background-image: url('./assets/dice-icon/6.png');
+}
+
+#bet-amount {
+  background-color: red;
+  box-shadow: 0 0 0 0 rgba(255,255,255,0.50);
+  border-radius: 10px;
+  background: #008ED1;
+  overflow: hidden;
+}
+
+#bet-amount > div:first-child {
+  background: #008ED1;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Helvetica;
+  font-size: 18px;
+  color: #FFFFFF;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+#bet-amount > div:last-child {
+  background: black;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#bet-amount > div:last-child input {
+  background-color: black;
+  border: none;
+  color: white;
+  font-size: 26px;
+  letter-spacing: 0;
+  text-align: center;
+  width: 100px;
+}
+
+#bet-amount > div:last-child input#down {
+  font-size: 46px;
+}
+
+#submit-roll {
+  background-image: url('./assets/roll-btn.png');
+  background-color: transparent;
+  background-position: center;
+  border: none;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 268px;
+  height: 60px;
+}
+
+#bet-result {
+  display: none;
+  flex-direction: column;
+  border-radius: 7px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 400px;
+  margin-top: 20px;
+}
+
+#bet-result #label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(180deg, #FBE04F 0%, #B8610F 100%);
+}
+
+#bet-result #amount {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: #A55D06;
+  border-radius: 5px;
+  border: solid 5px #FFE062;
+  overflow: hidden;  
+}
+
+@media screen and (max-width: 576px) {
+  #bet-result #amount {
+    height: 35px;
+  }
+
+  #bet-result #label {
+    height: 35px;
+  }
+
+  #bet-result {
+    max-width: unset;
+  }
+
+  #balance-container {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  #submit-roll {
+    width: 268px;
+    height: 50px;
+  }
+
+  #choose-roll-dice {
+    padding-bottom: 10px;
+  }
+}

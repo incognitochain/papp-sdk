@@ -1,0 +1,5 @@
+node_modules
+env/production.env.js
+env/development.env.js
+yarn-error.log
+dist

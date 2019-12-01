@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <form id="game-container">
+    <div id="balance-container">
+      <span>Balance</span>
+      <span id="balance"> --- </span>
+    </div>
+    <div id="roll-dice"></div>
+    <div id="choose-roll-dice">
+      <div class='roll-dice-icon' name='1'></div>
+      <div class='roll-dice-icon' name='2'></div>
+      <div class='roll-dice-icon' name='3'></div>
+      <div class='roll-dice-icon' name='4'></div>
+      <div class='roll-dice-icon' name='5'></div>
+      <div class='roll-dice-icon' name='6'></div>
+    </div>
+    <div id="bet-amount">
+      <div>
+        <span>BET</span>
+      </div>
+      <div>
+        <input type='button' id="down" value='-'></input>
+        <input required id="amount" value='0' type='number'></input>
+        <input type='button' id="up" value='+'></input>
+      </div>
+    </div>
+    <div id="bet-result">
+      <span id="label"></span>
+      <span id="amount"></span>
+    </div>
+    <button id="submit-roll" type="submit"></button>
+  </form>
+</body>
+</html>
