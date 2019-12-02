@@ -4,20 +4,20 @@ const { sendData, sendError } = require('./response');
 const BET_RATE = 3;
 
 // this game is yours!
-async function bet({ betAmount, paymentAddress }) {
-  const isWin = Math.round(Math.random() * 1) > 0; // ramdom bet result
-  return isWin ? await handleWin({ betAmount, paymentAddress }) : handleLose({ betAmount, paymentAddress });
+async function bet({ betAmount, paymentAddress, betDiceNumber }) {
+  const isWin = Math.round(Math.random() * 6) === betDiceNumber;
+  return isWin ? await handleWin({ betAmount, paymentAddress, betDiceNumber }) : handleLose({ betAmount, paymentAddress, betDiceNumber });
 }
 
 // user lose
-function handleLose({ betAmount, paymentAddress }) {
-  console.debug(`${paymentAddress} losed ${betAmount}`);
+function handleLose({ betAmount, paymentAddress, betDiceNumber }) {
+  console.debug(`${paymentAddress} losed ${betAmount}, bet ${betDiceNumber}`);
 
   return { lose: betAmount } ;
 }
 
 // user win
-async function handleWin({ betAmount, paymentAddress }) {
+async function handleWin({ betAmount, paymentAddress, betDiceNumber }) {
 
   const winAmount = betAmount * BET_RATE;
 
@@ -27,7 +27,7 @@ async function handleWin({ betAmount, paymentAddress }) {
     amount: winAmount
   });
 
-  console.debug(`${paymentAddress} won ${winAmount}. TxID: ${tx.txId}`);
+  console.debug(`${paymentAddress} won ${winAmount}, bet ${betDiceNumber}. TxID: ${tx.txId}`);
 
 
   return { win: winAmount, message: `You will receive ${winAmount} nano PRV in a couple minutes`, txId: tx.txId } ;
@@ -44,7 +44,7 @@ async function handleBetRequest(req, res) {
       sendError(res, 'Invalid params');
     }
   
-    const rs = await bet({ betAmount: payload.betAmount, paymentAddress: payload.paymentAddress });
+    const rs = await bet({ betAmount: payload.betAmount, paymentAddress: payload.paymentAddress, betDiceNumber: payload.betDiceNumber });
     sendData(res, rs);
   } catch (e) {
     sendError(res, e.message);

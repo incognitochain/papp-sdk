@@ -1,7 +1,9 @@
 
   
 
-# ROLLDICE
+# ROLLDICE BACKEND
+
+See more: [Rolldice client app](https://github.com/incognitochain/sdk/tree/rolldice-client-papp)
 
 ### Environment
 	
