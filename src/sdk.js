@@ -62,17 +62,18 @@ export function changePrivacyTokenById (tokenID) {
   __sendCommand(COMMANDS.SELECT_PRIVACY_TOKEN_BY_ID, { tokenID });
 }
 
-export function requestSendTx(toAddress, nanoAmount) {
+export function requestSendTx(toAddress, nanoAmount, info) {
   new Validator('toAddress', toAddress).required().paymentAddress();
   new Validator('nanoAmount', nanoAmount).required().nanoAmount();
+  new Validator('info', info).string();
 
   const pendingTxId = _genPendingTxId();
   return new Promise((resolve, reject) => {
     const timeout = setTimeout(() => {
       delete pendingRequestTxs[pendingTxId];
       reject(sdkError(ERROR_CODE.REQUEST_SEND_TX_TIMEOUT, 'Request send TX timeout'));
-    }, 3 * 60 * 1000);
-    __sendCommand(COMMANDS.SEND_TX, { pendingTxId, toAddress, amount: nanoAmount });
+    }, 5 * 60 * 1000);
+    __sendCommand(COMMANDS.SEND_TX, { pendingTxId, toAddress, amount: nanoAmount, info });
     pendingRequestTxs[pendingTxId] = { resolve, reject, timeout };
   });
 }
