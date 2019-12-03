@@ -5,11 +5,11 @@
 
 ## Install
 
-`yarn add https://github.com/incognitochain/sdk#papp-sdk`
+`yarn add https://github.com/incognitochain/sdk#papp-client-sdk`
 
 or
 
-`npm install https://github.com/incognitochain/sdk#papp-sdk`
+`npm install https://github.com/incognitochain/sdk#papp-client-sdk`
 
   
 
