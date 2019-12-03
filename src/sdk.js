@@ -1,12 +1,12 @@
-import { setListener } from './base/store';
+import { setListener, getStore } from './base/store';
 import Validator from './base/validator';
 import log, { logError } from './base/log';
-import store from './base/store';
-import { sdkError, ERROR_CODE } from './base/error';
+// import { sdkError, ERROR_CODE } from './base/error';
 import { DATA_NAMES, COMMANDS } from './base/constants';
 
 // keep request txs id to track tx status
 const pendingRequestTxs = {};
+const store = getStore();
 
 export function onTokenInfoChange(callback) {
   setListener(DATA_NAMES.TOKEN_INFO, callback);
@@ -69,12 +69,13 @@ export function requestSendTx(toAddress, nanoAmount, info) {
 
   const pendingTxId = _genPendingTxId();
   return new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => {
-      delete pendingRequestTxs[pendingTxId];
-      reject(sdkError(ERROR_CODE.REQUEST_SEND_TX_TIMEOUT, 'Request send TX timeout'));
-    }, 5 * 60 * 1000);
+    // // request timeout in 5 mins
+    // const timeout = setTimeout(() => {
+    //   delete pendingRequestTxs[pendingTxId];
+    //   reject(sdkError(ERROR_CODE.REQUEST_SEND_TX_TIMEOUT, 'Request send TX timeout'));
+    // }, 5 * 60 * 1000);
     __sendCommand(COMMANDS.SEND_TX, { pendingTxId, toAddress, amount: nanoAmount, info });
-    pendingRequestTxs[pendingTxId] = { resolve, reject, timeout };
+    pendingRequestTxs[pendingTxId] = { resolve, reject, /* timeout */ };
   });
 }
 
@@ -89,9 +90,9 @@ export function _setData(name, data) {
   case DATA_NAMES.TX_PENDING_RESULT:
     // data: { pendingTxId: string, data: { txID: string }, error: { code: number, message: string } }
     if (data.pendingTxId && pendingRequestTxs[data.pendingTxId]) {
-      if (pendingRequestTxs[data.pendingTxId].timeout) {
-        clearTimeout(pendingRequestTxs[data.pendingTxId].timeout);
-      }
+      // if (pendingRequestTxs[data.pendingTxId].timeout) {
+      //   clearTimeout(pendingRequestTxs[data.pendingTxId].timeout);
+      // }
 
       // success
       if (data.data) {
