@@ -7,13 +7,10 @@ import SDK from 'papp-sdk';
  * onPaymentAddressChange
  * onSupportedTokenListChange
  * onTokenInfoChange
- *  changePrivacyTokenById
- *  requestSendTx
- *  store
- *  Validator
- *  DATA_NAMES
- *  COMMANDS
- *  _setData
+ * changePrivacyTokenById
+ * requestSendTx
+ * Validator
+ * ERROR_CODE
  */
 
 export function onSupportedTokenListChange(handler) {
