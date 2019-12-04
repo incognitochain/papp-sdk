@@ -13,6 +13,35 @@ const betAmount = gameContainer.querySelector('#bet-amount #amount');
 const betResult = gameContainer.querySelector('#bet-result');
 const betResultAmountTxt = gameContainer.querySelector('#bet-result #amount');
 const betResultLabelTxt = gameContainer.querySelector('#bet-result #label');
+const messageBox = gameContainer.querySelector('#message-box');
+
+let messageBoxTimeout;
+
+const showMessage = (message, { timeout = 5000, type } = {}) => {
+  if (!message) return;
+  
+  messageBox.className = '';
+  const mesageEl = messageBox.querySelector('span');
+
+  if (type) {
+    messageBox.classList.add(type);
+  }
+
+  const prefix = type === 'error' ? 'Opps!\n' : '';
+
+  mesageEl.innerText = `${prefix} ${message}`;
+  messageBox.style.maxHeight = '100px';
+
+  // clear prv msg
+  if (messageBoxTimeout) {
+    clearTimeout(messageBoxTimeout);
+    messageBoxTimeout = null;
+  }
+
+  messageBoxTimeout = setTimeout(() => {
+    messageBox.style.maxHeight = '0px';
+  }, timeout);
+};
 
 const setBalanceTxt = ({ balance, symbol }) => {
   balance = Number(balance) || 0;
@@ -148,6 +177,15 @@ const rollTo = number => {
   rollDiceImg.style.backgroundImage = `url('${dice.default}')`;
 };
 
+async function animateDice() {
+  const delay = () => new Promise(r => setTimeout(r, 200));
+  for(let i =1; i<= 6; i++) {
+    selectDice(i);
+    await delay();
+  }
+  selectDice();
+}
+
 export default {
   setBalanceTxt,
   getBalance,
@@ -161,5 +199,7 @@ export default {
   getBetAmount,
   rollTo,
   selectDice,
-  onSelectRollDice
+  onSelectRollDice,
+  showMessage,
+  animateDice
 };

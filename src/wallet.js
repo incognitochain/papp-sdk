@@ -13,6 +13,8 @@ import SDK from 'papp-sdk';
  * ERROR_CODE
  */
 
+export const ERROR_CODE = SDK.ERROR_CODE;
+
 export function onSupportedTokenListChange(handler) {
   SDK.onSupportedTokenListChange(handler);
 }

@@ -4668,7 +4668,7 @@ pako@~1.0.5:
 
 "papp-sdk@https://github.com/incognitochain/sdk#papp-client-sdk":
   version "1.0.0"
-  resolved "https://github.com/incognitochain/sdk#d53edc538db129ad90d0b3e940174fee8d052bad"
+  resolved "https://github.com/incognitochain/sdk#55370aade4fc1dcc663822137060c368cbd16d33"
 
 parallel-transform@^1.1.0:
   version "1.2.0"

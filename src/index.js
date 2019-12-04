@@ -1,8 +1,9 @@
 import main from './main';
+import uiControl from './ui_control';
 import './style.css';
 
 window.addEventListener('error', function(e) {
-  alert(`Opps! We have an error.\nDetail: ${e.message}`);
+  uiControl.showMessage(e.message, { type: 'error' });
 });
 
 window.addEventListener('load', function() {

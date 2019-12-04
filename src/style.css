@@ -224,4 +224,31 @@ button:focus, input[type=button] {
   #choose-roll-dice {
     padding-bottom: 10px;
   }
+
+  #message-box {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: #FBE04F;
+    border-radius: 0px 0px 4px 4px;
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.3s;
+  }
+
+  #message-box.error {
+    background-color: red;
+  }
+
+  #message-box.error span{
+    color: white;
+  }
+
+  #message-box span {
+    display: block;
+    padding: 10px;
+    color: #262223;
+    text-align: left;
+  }
 }
