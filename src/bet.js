@@ -41,10 +41,15 @@ async function handleBetRequest(req, res) {
     // betAmount is amount user bet
     // paymentAddress is user's incognito address, you need it to send token (win prize) to the user
     if (!validate.isValidPayload(payload)) {
-      sendError(res, 'Invalid params');
+      throw new Error('Invalid params');
     }
+
+    const { betAmount, paymentAddress, betDiceNumber, txId } = payload;
+
+    // verify tx
+    await sdk.checkTx(txId);
   
-    const rs = await bet({ betAmount: payload.betAmount, paymentAddress: payload.paymentAddress, betDiceNumber: payload.betDiceNumber });
+    const rs = await bet({ betAmount, paymentAddress, betDiceNumber });
     sendData(res, rs);
   } catch (e) {
     sendError(res, e.message);

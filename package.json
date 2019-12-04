@@ -19,7 +19,6 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "incognito-chain-web-js": "/Users/autonomous/projects/constant-chain-web-js",
     "incognito-sdk": "https://github.com/incognitochain/sdk",
     "isomorphic-fetch": "^2.2.1",
     "nodemon": "^2.0.0",

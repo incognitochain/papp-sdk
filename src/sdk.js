@@ -24,6 +24,10 @@ async function loadSDK() {
   });
 }
 
+async function checkTx(txId) {
+  return !txId;
+}
+
 
 async function getSDK() {
   if (!sdk) {
@@ -56,5 +60,6 @@ async function handleSend({ paymentAddress, amount }) {
 
 module.exports = {
   getSDK,
-  handleSend
+  handleSend,
+  checkTx
 };
