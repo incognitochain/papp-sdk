@@ -53,11 +53,15 @@ class Validator {
     return this._onCondition(() => typeof this.value === 'boolean', message);
   }
   
-  number(message = 'Must be number') {
+  number(message = 'Must be number (larger than 0)') {
     return this._onCondition(() => Number.isFinite(this.value) && this.value > 0, message);
   }
+
+  array(message = 'Must be array') {
+    return this._onCondition(() => this.value instanceof Array, message);
+  }
   
-  intergerNumber(message = 'Must be an interger number') {
+  intergerNumber(message = 'Must be an interger number (larger than 0)') {
     return this._onCondition(() => Number.isInteger(this.value) && this.value > 0, message);
   }
   
@@ -84,6 +88,21 @@ class Validator {
    */
   amount(message = 'Invalid amount') {
     return this._onCondition(() => this.intergerNumber(), message);
+  }
+
+  receivers(message = 'Invalid receivers, must be array of receiver [receiverAddress, receiverAmount]') {
+    return this._onCondition(() => {
+      if (!(this.value instanceof Array) || this.value.length === 0) return false;
+      return this.value.every(receiver => {
+        new Validator('receiver', receiver).required().array();
+
+        const [paymentAddress, amount] = receiver;
+
+        new Validator('receiver paymentAddress', paymentAddress).required().paymentAddress();
+        new Validator('receiver amount', amount).required().amount();
+        return true;
+      });
+    }, message);
   }
 }
 

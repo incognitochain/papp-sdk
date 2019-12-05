@@ -103,7 +103,8 @@ const { Validator } = require('incognito-sdk);
 	    .intergerNumber(message  =  'Must be an interger number')
 	    .paymentAddress(message  =  'Invalid payment address')
 	    .privateKey(message  =  'Invalid private key')
-	    .accountWallet(message  =  'Invalid account wallet')
+			.accountWallet(message  =  'Invalid account wallet')
+			.receivers(message  =  'Invalid receivers, must be array of receiver [receiverAddress, receiverAmount]')
 	    .amount(message  =  'Invalid amount'); // amount must be nano (interger number and > 0)
 ```
 
