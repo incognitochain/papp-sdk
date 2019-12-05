@@ -61,10 +61,10 @@ async function sendPToken({ paymentAddress, amount, tokenName, tokenSymbol, toke
  * @param {number} amount amount want to send, in nano (must be integer number)
  * @param {number} feePRV fee for sending, in nano PRV (must be integer number)
  * @param {string} message sending message, this will be public on explorer
+ * @param {array} receivers array of receivers. [ [receiverPaymentAddress1, receiverAmount1], [receiverPaymentAddress2, receiverAmount2] ]
  */
-async function sendPRV({ paymentAddress, amount, feePRV = CONFIGS.DEFAULT_PRV_FEE, message } = {}) {
-  new Validator('paymentAddress', paymentAddress).required().paymentAddress();
-  new Validator('amount', amount).required().amount();
+async function sendPRV({ feePRV = CONFIGS.DEFAULT_PRV_FEE, message, receivers } = {}) {
+  new Validator('receivers', receivers).required().receivers();
   new Validator('feePRV', feePRV).required().amount();
   new Validator('message', message).string();
 
@@ -73,13 +73,12 @@ async function sendPRV({ paymentAddress, amount, feePRV = CONFIGS.DEFAULT_PRV_FE
   const accountSender = defaultAccount;
 
   // payment info for PRV
-  const paymentInfos = [{
-    paymentAddressStr: paymentAddress, amount: amount
-  }];
+  const paymentInfos = receivers.map(([paymentAddressStr, amount]) => ({ paymentAddressStr, amount }));
 
   const infoStr = message ? JSON.stringify(message) : '';
 
   const hasPrivacy = true;
+
   return accountSender.createAndSendNativeToken(paymentInfos, feePRV || 0, hasPrivacy, infoStr);
 }
 
