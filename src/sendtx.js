@@ -9,8 +9,7 @@ const defaultAccount = getDefaultAccount();
 
 /**
  * Transfer TOKEN in Incognito chain, fee must be defined (PRV fee or TOKEN fee)
- * @param {string} paymentAddress Receiver Incognito address 
- * @param {number} amount amount want to send, in nano (must be integer number)
+ * @param {array} receivers array of receivers. [ [receiverPaymentAddress1, receiverAmount1], [receiverPaymentAddress2, receiverAmount2] ]
  * @param {string} tokenName name of the TOKEN
  * @param {string} tokenSymbol symbol of the TOKEN
  * @param {string} tokenId id of the TOKEN
@@ -18,9 +17,8 @@ const defaultAccount = getDefaultAccount();
  * @param {number} feePToken fee for sending, in nano TOKEN (must be integer number)
  * @param {string} message sending message, this will be public on explorer
  */
-async function sendPToken({ paymentAddress, amount, tokenName, tokenSymbol, tokenId, feePRV = CONFIGS.DEFAULT_PRV_FEE, feePToken, message } = {}) {
-  new Validator('paymentAddress', paymentAddress).required().paymentAddress();
-  new Validator('amount', amount).required().amount();
+async function sendPToken({ receivers, tokenName, tokenSymbol, tokenId, feePRV = CONFIGS.DEFAULT_PRV_FEE, feePToken, message } = {}) {
+  new Validator('receivers', receivers).required().receivers();
   new Validator('tokenName', tokenName).string();
   new Validator('tokenSymbol', tokenSymbol).string();
   new Validator('tokenId', tokenId).required().string();
@@ -41,17 +39,15 @@ async function sendPToken({ paymentAddress, amount, tokenName, tokenSymbol, toke
     TokenName: tokenName || '',
     TokenSymbol: tokenSymbol || '',
     TokenTxType: CONFIGS.CustomTokenTransfer,
-    TokenAmount: amount,
-    TokenReceivers: {
-      PaymentAddress: paymentAddress,
-      Amount: amount
-    }
+    TokenAmount: 0,
+    TokenReceivers: receivers.map(([PaymentAddress, Amount]) => ({ PaymentAddress, Amount }))
   };
 
   const infoStr = message ? JSON.stringify(message) : '';
 
   let hasPrivacyForToken = true;
   let hasPrivacyForNativeToken = true;
+  
   return accountSender.createAndSendPrivacyToken(paymentInfos, tokenParams, feePRV || 0, feePToken || 0, hasPrivacyForNativeToken, hasPrivacyForToken, infoStr);
 }
 

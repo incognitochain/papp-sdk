@@ -73,7 +73,7 @@ CHAIN_URL: 'https://testnet.incognito.org'
 
 ### Sending transaction methods
 
-* `(Promise) sendPToken({ paymentAddress, amount, tokenName, tokenSymbol, tokenId, feePRV [ = DEFAULT_PRV_FEE], feePToken, message })` transfer pToken in Incognito chain. `DEFAULT_PRV_FEE` defined in `config`.
+* `(Promise) sendPToken({ receivers, tokenName, tokenSymbol, tokenId, feePRV [ = DEFAULT_PRV_FEE], feePToken, message })` transfer pToken in Incognito chain. `DEFAULT_PRV_FEE` defined in `config`, `receivers` is array of `[receiver_payment_address, receiver_nano_amount]` (i.e `receivers = [ ['abc', 100], ['xyz', 200] ]`)
 
 * ` (Promise) sendPRV({ receivers, feePRV [ = DEFAULT_PRV_FEE ], message })` transfer PRV in Incognito chain. `DEFAULT_PRV_FEE` defined in `config`, `receivers` is array of `[receiver_payment_address, receiver_nano_amount]` (i.e `receivers = [ ['abc', 100], ['xyz', 200] ]`)
 
