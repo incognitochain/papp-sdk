@@ -14,12 +14,28 @@ function toNanoAmount(amount, pDecimals) {
   return amount*(pDecimals ? 10**pDecimals : 1) || 0;
 }
 
-function init() {
+async function isServerReady() {
+  try {
+    const res = await axios.get(APP_ENV.SERVER_URL);
+    return res.data && !!res.data.ready;
+  } catch (e) {
+    return false;
+  }
+}
+
+async function init() {
   // onSupportedTokenListChange(list => {
   //   alert(JSON.stringify(list));
   // });
 
-  setTimeout(() => uiControl.animateDice(), 1000);
+  if (!(await isServerReady())) {
+    const msg = 'Sorry, host is not ready yet, please come back later.';
+    uiControl.showMessage(msg, { timeout: 300000 });
+    alert(msg);
+    return;
+  }
+
+  setTimeout(() => uiControl.animateDice(betDiceNumber), 1000);
 
   onTokenInfoChange(tInfo => {
     const { symbol, balance, /** name, symbol, id, pDecimals, balance, nanoBalance */ } = tInfo;
@@ -59,7 +75,7 @@ function init() {
     uiControl.selectDice(betDiceNumber);
   });
 
-  uiControl.onPressSubmitRoll((e) => {
+  uiControl.onPressSubmitRoll(async (e) => {
     try {
       e.preventDefault();
 
@@ -83,63 +99,49 @@ function init() {
       // send player's token to the server, then the server returns bet result, if the player wins, the server will send reward to the player
       const nanoAmount = toNanoAmount(betAmount, tokenInfo.pDecimals);
   
-      requestSendTx(paymentAddressServer, nanoAmount, tokenInfo.symbol)
-        .then((txInfo) => {
-  
-          // uiControl.rollTo(Math.round(Math.random() * 6));
-  
-          if (txInfo.txId) {
-            // See more "Rolldice backend" https://github.com/incognitochain/sdk/tree/rolldice for detail
-            axios.post(`${APP_ENV.SERVER_URL}/bet`, {
-              txId: txInfo.txId,
-              paymentAddress,
-              betAmount: nanoAmount,
-              betDiceNumber: betDiceNumber || 0
-            })
-              .then(res => {
-                // RANDOM BET RESULT FOR NOW 
-                const result = res.data && res.data.data || {};
-                const { win, lose, message, betDiceNumberResult } = result;
-                uiControl.rollTo(betDiceNumberResult);
-  
-                if (win) {
-                  uiControl.setBetWin({ winAmount: toAmount(win, tokenInfo.pDecimals) });
-                }
-                if (lose) {
-                  uiControl.setBetLose({ loseAmount: toAmount(lose, tokenInfo.pDecimals) });
-                }
-  
-                if (message) {
-                  uiControl.showMessage(message, { timeout: 7000 });
-                }
-              })
-              .catch(e => {
-                uiControl.showMessage(e.message || 'Opps! Something went wrong.', { type: 'error' });
-              });
-    
-          }
-        })
-        .catch(e => {
-          if (e.code === ERROR_CODE.USER_CANCEL_SEND_TX) {
-            switch(e.code) {
-            case ERROR_CODE.USER_CANCEL_SEND_TX:
-              uiControl.showMessage('Request was canceled', { timeout: 3000 });
-              return;
-            case ERROR_CODE.REQUEST_SEND_TX_TIMEOUT:
-              uiControl.showMessage('Request timeout', { timeout: 3000 });
-              return;
-            case ERROR_CODE.SEND_TX_ERROR:
-              uiControl.showMessage(`Send transaction failed. (${e.message})`, { timeout: 3000 });
-              return;
-            }
-            
-            uiControl.showMessage(`Opps! Something went wrong. (${e.message})`, { timeout: 3000 });
-            return;
-          }
-          uiControl.showMessage(e.message || 'Opps! Something went wrong.', { type: 'error' });
+      const txInfo = await requestSendTx(paymentAddressServer, nanoAmount, tokenInfo.symbol);
+      if (txInfo.txId) {
+        // See more "Rolldice backend" https://github.com/incognitochain/sdk/tree/rolldice for detail
+        const res = await axios.post(`${APP_ENV.SERVER_URL}/bet`, {
+          txId: txInfo.txId,
+          paymentAddress,
+          betAmount: nanoAmount,
+          betDiceNumber: betDiceNumber || 0
         });
+
+        // RANDOM BET RESULT FOR NOW 
+        const result = res.data && res.data.data || {};
+
+        const { win, lose, message, betDiceNumberResult } = result;
+        uiControl.rollTo(betDiceNumberResult);
+        
+        if (win) {
+          uiControl.setBetWin({ winAmount: toAmount(win, tokenInfo.pDecimals) });
+        }
+        if (lose) {
+          uiControl.setBetLose({ loseAmount: toAmount(lose, tokenInfo.pDecimals) });
+        }
+
+        if (message) {
+          uiControl.showMessage(message, { timeout: 7000 });
+        }
+      } else {
+        throw new Error('Can not create transaction');
+      }
     } catch (e) {
-      uiControl.showMessage(e.message || 'Opps! Something went wrong.', { type: 'error' });
+      switch(e.code) {
+      case ERROR_CODE.USER_CANCEL_SEND_TX:
+        uiControl.showMessage('Request was canceled', { timeout: 3000 });
+        return;
+      case ERROR_CODE.REQUEST_SEND_TX_TIMEOUT:
+        uiControl.showMessage('Request timeout', { timeout: 3000 });
+        return;
+      case ERROR_CODE.SEND_TX_ERROR:
+        uiControl.showMessage('Can not process your bet right now, please try again. If this is still happening, please try after 5 minutes', { timeout: 10000 });
+        return;
+      }
+
+      uiControl.showMessage(`Something went wrong. ${e.message ? `(${e.message})` : ''}`, { type: 'error' });
     }
   });
 }

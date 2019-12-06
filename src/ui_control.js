@@ -58,10 +58,6 @@ const setBetWin = ({ winAmount, label = 'YOU WIN' }) => {
   betResultAmountTxt && (betResultAmountTxt.innerText = winAmount);
   betResultLabelTxt && (betResultLabelTxt.innerText = label);
   betResult.style.display = 'flex';
-
-  setTimeout(() => {
-    betResult.style.display = 'none';
-  }, 3000);
 };
 
 const setBetLose = ({ loseAmount, label = 'YOU LOSE' }) => {
@@ -69,10 +65,6 @@ const setBetLose = ({ loseAmount, label = 'YOU LOSE' }) => {
   betResultAmountTxt && (betResultAmountTxt.innerText = loseAmount);
   betResultLabelTxt && (betResultLabelTxt.innerText = label);
   betResult.style.display = 'flex';
-
-  setTimeout(() => {
-    betResult.style.display = 'none';
-  }, 3000);
 };
 
 const getBalance = () => {
@@ -103,7 +95,12 @@ const onPressUpBetAmount = callback => {
 };
 
 const onPressSubmitRoll = callback => {
-  submitRollButton.addEventListener('click', callback);
+  submitRollButton.addEventListener('click', function(e) {
+    if (typeof callback === 'function') {
+      callback(e);
+      betResult.style.display = 'none';
+    }
+  });
 };
 
 const onSelectRollDice = callback => {
@@ -177,13 +174,13 @@ const rollTo = number => {
   rollDiceImg.style.backgroundImage = `url('${dice.default}')`;
 };
 
-async function animateDice() {
+async function animateDice(betDiceNumber) {
   const delay = () => new Promise(r => setTimeout(r, 200));
   for(let i =1; i<= 6; i++) {
     selectDice(i);
     await delay();
   }
-  selectDice();
+  selectDice(betDiceNumber);
 }
 
 export default {

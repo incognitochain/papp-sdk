@@ -90,7 +90,7 @@ const config = {
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        use: ['style-loader', 'css-loader', { loader: 'postcss-loader' },],
       },
       {
         test: /\.(png|jpg|gif)$/i,
