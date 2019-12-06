@@ -1,7 +1,11 @@
 const sdk = require('./sdk');
 const validate = require('./validate');
 const { sendData, sendError } = require('./response');
+const { addWinner, sendRewardSchedule } = require('./reward');
 const BET_RATE = 3;
+
+// start schedule 
+sendRewardSchedule();
 
 // this game is yours!
 async function bet({ betAmount, paymentAddress, betDiceNumber }) {
@@ -22,16 +26,11 @@ async function handleWin({ betAmount, paymentAddress, betDiceNumber, betDiceNumb
 
   const winAmount = betAmount * BET_RATE;
 
-  // server has to send token (as a prize) to the user
-  const tx = await sdk.handleSend({
-    paymentAddress,
-    amount: winAmount
-  });
+  await addWinner(paymentAddress, winAmount);
 
-  console.debug(`${paymentAddress} won ${winAmount}, bet: ${betDiceNumber}, result: ${betDiceNumberResult}. TxID: ${tx.txId}`);
+  console.debug(`${paymentAddress} won ${winAmount}, bet: ${betDiceNumber}, result: ${betDiceNumberResult}. Added to winner list`);
 
-
-  return { win: winAmount, betDiceNumberResult, message: `You will receive ${winAmount} nano PRV in a couple minutes`, txId: tx.txId } ;
+  return { win: winAmount, betDiceNumberResult, message: `You will receive ${winAmount} nano PRV in a couple minutes` } ;
 }
 
 async function handleBetRequest(req, res) {

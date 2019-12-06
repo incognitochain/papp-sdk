@@ -37,23 +37,19 @@ async function getSDK() {
   return sdk;
 }
 
-async function handleSend({ paymentAddress, amount }) {
+async function handleSend({ receivers }) {
   const { Validator } = await getSDK();
-  new Validator('paymentAddress', paymentAddress)
+  new Validator('receivers', receivers)
     .required()
-    .paymentAddress();
-  new Validator('amount', amount)
-    .required()
-    .amount();
+    .receivers();
 
   const sdk = await getSDK();
   const res = await sdk.sendtx.sendPRV({
-    paymentAddress,
-    amount,
-    message: `Rolldice pay to user ${amount} nano PRV`
+    receivers,
+    message: 'Dice Roll sends reward to winners'
   });
 
-  console.debug('Sent successfully', paymentAddress, amount);
+  console.debug('Sent successfully', receivers);
 
   return res;
 }

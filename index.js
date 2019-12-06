@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 
 // greating :-)
 app.get('/', function (req, res) {
-  res.send('roll dice was started!');
+  res.json({ ready: true, msg: 'hello from dice roll :-)' });
 });
 
 // handle your game

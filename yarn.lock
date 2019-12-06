@@ -3104,8 +3104,9 @@ imurmurhash@^0.1.4:
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
   integrity sha1-khi5srkoojixPcT7a21XbyMUU+o=
 
-"incognito-chain-web-js@file:../constant-chain-web-js":
+"incognito-chain-web-js@https://github.com/incognitochain/incognito-chain-web-js.git":
   version "1.0.0"
+  resolved "https://github.com/incognitochain/incognito-chain-web-js.git#0a28f6a0c933584e30ca8831d450c287eba84205"
   dependencies:
     axios "^0.19.0"
     circular-json "^0.5.9"
@@ -3114,14 +3115,25 @@ imurmurhash@^0.1.4:
     sha3 "^2.0.7"
     yarn "^1.19.1"
 
-"incognito-sdk@https://github.com/incognitochain/sdk":
+"incognito-sdk@file:../incognito-sdk":
   version "1.0.0"
-  resolved "https://github.com/incognitochain/sdk#7e76a156b13b45e68dcf206118fff271b164abaf"
   dependencies:
     axios "^0.19.0"
     body-parser "^1.19.0"
     express "^4.17.1"
-    incognito-chain-web-js "file:../constant-chain-web-js"
+    incognito-chain-web-js "https://github.com/incognitochain/incognito-chain-web-js.git"
+    isomorphic-fetch "^2.2.1"
+    nodemon "^2.0.0"
+    window "^4.2.6"
+
+"incognito-sdk@https://github.com/incognitochain/sdk":
+  version "1.0.0"
+  resolved "https://github.com/incognitochain/sdk#d4b49af6971eaaa7158021fec45ac4659b81023a"
+  dependencies:
+    axios "^0.19.0"
+    body-parser "^1.19.0"
+    express "^4.17.1"
+    incognito-chain-web-js "https://github.com/incognitochain/incognito-chain-web-js.git"
     isomorphic-fetch "^2.2.1"
     nodemon "^2.0.0"
     window "^4.2.6"
