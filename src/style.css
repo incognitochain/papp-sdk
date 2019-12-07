@@ -1,5 +1,5 @@
 html {
-  background-image: url('./assets/bg.png');
+  background-image: url('./assets/bg.jpg');
 }
 
 button:focus, input[type=button] {
@@ -105,27 +105,27 @@ button:focus, input[type=button] {
 }
 
 #choose-roll-dice > div[name='1'] {
-  background-image: url('./assets/dice-icon/1.png');
+  background-image: url('./assets/dice-icon/1.jpg');
 }
 
 #choose-roll-dice > div[name='2'] {
-  background-image: url('./assets/dice-icon/2.png');
+  background-image: url('./assets/dice-icon/2.jpg');
 }
 
 #choose-roll-dice > div[name='3'] {
-  background-image: url('./assets/dice-icon/3.png');
+  background-image: url('./assets/dice-icon/3.jpg');
 }
 
 #choose-roll-dice > div[name='4'] {
-  background-image: url('./assets/dice-icon/4.png');
+  background-image: url('./assets/dice-icon/4.jpg');
 }
 
 #choose-roll-dice > div[name='5'] {
-  background-image: url('./assets/dice-icon/5.png');
+  background-image: url('./assets/dice-icon/5.jpg');
 }
 
 #choose-roll-dice > div[name='6'] {
-  background-image: url('./assets/dice-icon/6.png');
+  background-image: url('./assets/dice-icon/6.jpg');
 }
 
 #bet-amount {

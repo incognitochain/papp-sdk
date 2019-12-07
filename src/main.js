@@ -141,7 +141,7 @@ async function init() {
         throw new Error('Can not create transaction');
       }
     } catch (e) {
-      const resErrText = e && e.response && e.response.data;
+      const resErrText = e && (e.response && e.response.data) || e.message;
 
       switch(e.code) {
       case ERROR_CODE.USER_CANCEL_SEND_TX:
