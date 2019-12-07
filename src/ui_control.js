@@ -14,8 +14,13 @@ const betResult = gameContainer.querySelector('#bet-result');
 const betResultAmountTxt = gameContainer.querySelector('#bet-result #amount');
 const betResultLabelTxt = gameContainer.querySelector('#bet-result #label');
 const messageBox = gameContainer.querySelector('#message-box');
+const loading = document.body.querySelector('#loading');
 
 let messageBoxTimeout;
+
+const hideAppLoading = () => {
+  loading && (loading.style.display = 'none');
+};
 
 const showMessage = (message, { timeout = 5000, type } = {}) => {
   if (!message) return;
@@ -198,5 +203,6 @@ export default {
   selectDice,
   onSelectRollDice,
   showMessage,
-  animateDice
+  animateDice,
+  hideAppLoading
 };

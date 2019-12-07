@@ -7,5 +7,5 @@ window.addEventListener('error', function(e) {
 });
 
 window.addEventListener('load', function() {
-  main.init();
+  main.handleStartup(main.init);
 });

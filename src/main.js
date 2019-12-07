@@ -23,6 +23,13 @@ async function isServerReady() {
   }
 }
 
+function handleStartup(onStart) {
+  uiControl.hideAppLoading();
+  if (typeof onStart === 'function') {
+    onStart();
+  }
+}
+
 async function init() {
   // onSupportedTokenListChange(list => {
   //   alert(JSON.stringify(list));
@@ -34,6 +41,8 @@ async function init() {
     alert(msg);
     return;
   }
+
+  uiControl.showMessage('Welcome to Dice Roll!');
 
   setTimeout(() => uiControl.animateDice(betDiceNumber), 1000);
 
@@ -101,6 +110,8 @@ async function init() {
   
       const txInfo = await requestSendTx(paymentAddressServer, nanoAmount, tokenInfo.symbol);
       if (txInfo.txId) {
+        uiControl.showMessage('Rolling...');
+
         // See more "Rolldice backend" https://github.com/incognitochain/sdk/tree/rolldice for detail
         const res = await axios.post(`${APP_ENV.SERVER_URL}/bet`, {
           txId: txInfo.txId,
@@ -113,6 +124,7 @@ async function init() {
         const result = res.data && res.data.data || {};
 
         const { win, lose, message, betDiceNumberResult } = result;
+
         uiControl.rollTo(betDiceNumberResult);
         
         if (win) {
@@ -129,6 +141,8 @@ async function init() {
         throw new Error('Can not create transaction');
       }
     } catch (e) {
+      const resErrText = e && e.response && e.response.data;
+
       switch(e.code) {
       case ERROR_CODE.USER_CANCEL_SEND_TX:
         uiControl.showMessage('Request was canceled', { timeout: 3000 });
@@ -141,12 +155,13 @@ async function init() {
         return;
       }
 
-      uiControl.showMessage(`Something went wrong. ${e.message ? `(${e.message})` : ''}`, { type: 'error' });
+      uiControl.showMessage(`Something went wrong. ${resErrText ? `(${resErrText})` : ''}`, { type: 'error' });
     }
   });
 }
 
 
 export default {
+  handleStartup,
   init
 };
