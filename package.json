@@ -46,6 +46,6 @@
   "dependencies": {
     "axios": "^0.19.0",
     "http-server": "^0.12.0",
-    "papp-sdk": "/Users/autonomous/projects/papp-sdk"
+    "papp-sdk": "https://github.com/incognitochain/sdk#papp-client-sdk"
   }
 }

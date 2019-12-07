@@ -4886,6 +4886,10 @@ pako@~1.0.5:
 "papp-sdk@file:../papp-sdk":
   version "1.0.0"
 
+"papp-sdk@https://github.com/incognitochain/sdk#papp-client-sdk":
+  version "1.0.0"
+  resolved "https://github.com/incognitochain/sdk#55370aade4fc1dcc663822137060c368cbd16d33"
+
 parallel-transform@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/parallel-transform/-/parallel-transform-1.2.0.tgz#9049ca37d6cb2182c3b1d2c720be94d14a5814fc"
