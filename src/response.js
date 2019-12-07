@@ -1,9 +1,11 @@
 function sendData(res, data) {
-  res.send({ data }).status(200);
+  console.debug('Response data', data);
+  res.status(200).send({ data });
 }
 
 function sendError(res, error) {
-  res.send({ error }).status(400);
+  console.debug('Response error', error);
+  res.status(400).send(error);
 }
 
 module.exports = {
