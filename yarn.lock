@@ -3115,20 +3115,9 @@ imurmurhash@^0.1.4:
     sha3 "^2.0.7"
     yarn "^1.19.1"
 
-"incognito-sdk@file:../incognito-sdk":
-  version "1.0.0"
-  dependencies:
-    axios "^0.19.0"
-    body-parser "^1.19.0"
-    express "^4.17.1"
-    incognito-chain-web-js "https://github.com/incognitochain/incognito-chain-web-js.git"
-    isomorphic-fetch "^2.2.1"
-    nodemon "^2.0.0"
-    window "^4.2.6"
-
 "incognito-sdk@https://github.com/incognitochain/sdk":
-  version "1.0.0"
-  resolved "https://github.com/incognitochain/sdk#d4b49af6971eaaa7158021fec45ac4659b81023a"
+  version "1.0.1"
+  resolved "https://github.com/incognitochain/sdk#86a5d1bb3b344aecdddc8a93c887d284fd173271"
   dependencies:
     axios "^0.19.0"
     body-parser "^1.19.0"
