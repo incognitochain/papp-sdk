@@ -90,9 +90,9 @@ class Validator {
     return this._onCondition(() => this.intergerNumber(), message);
   }
 
-  receivers(message = 'Invalid receivers, must be array of receiver [receiverAddress, receiverAmount]') {
+  receivers(message = 'Invalid receivers, must be array of receiver [receiverAddress, receiverAmount] (max 30 receivers)') {
     return this._onCondition(() => {
-      if (!(this.value instanceof Array) || this.value.length === 0) return false;
+      if (!(this.value instanceof Array) || this.value.length === 0 || this.length > 30) return false;
       return this.value.every(receiver => {
         new Validator('receiver', receiver).required().array();
 
