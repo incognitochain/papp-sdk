@@ -1,7 +1,7 @@
 
   
 
-# HOW TO USE (v1.0.0)
+# HOW TO USE (v1.0.1)
 
 ## Install
 
@@ -18,10 +18,10 @@ or
 
 
 ```javascript
-import sdk from 'papp-sdk';
+import SDK from 'papp-sdk';
 
-if (sdk.checkSDKCompatible()) {
-	console.log('There are all methods supported', sdk);
+if (SDK.checkSDKCompatible()) {
+	console.log('There are all methods supported', SDK);
 } else {
 	console.error('SDK is only work on Incognito Wallet pApp');
 }
@@ -40,11 +40,24 @@ if (sdk.checkSDKCompatible()) {
 
 * `onPaymentAddressChange(function(paymentAddress) {})` returns current account payment address.
 
-* `onSupportedTokenListChange(function(listToken) {})` returns following tokens in current account. 
+* `onSupportedTokenListChange(function(listToken) {})` returns list of tokens supported (from `setListSupportTokenById`).
 
 * `onTokenInfoChange(function(tokenInfo) {})` returns current token information (default PRV).
 * `changePrivacyTokenById(tokenId)` switch to a token with id = 'tokenId'
 * `requestSendTx(toAddress, nanoAmount, info)` make a request send transaction to `toAddress` (Incognito Address) with amount is `nanoAmount` (in nano), `info` (or tx message) is optional field. Users can confirm or cancel it.
+* `setListSupportTokenById(tokenIDs)` set list of tokens will be used in the pApp. (PRV is always available).
+  ```javascript
+  const { SUPPORTED_TOKEN } = SDK;
+  
+  /*
+  	List of SUPPORTED_TOKEN: pETH, pBTC, pUSDT, pBNB, pUSD, pTomo (please use pTomo_Testnet on testnet).
+  */
+  
+  SDK.setListSupportTokenById([
+  	SUPPORTED_TOKEN.pETH,
+    SUPPORTED_TOKEN.pBTC
+   ]);
+  ```
 
  
   
@@ -58,18 +71,18 @@ if (sdk.checkSDKCompatible()) {
 const { Validator } = require('incognito-sdk);
     
     new Validator(label, value)
-	    .required(message  =  'Required')
-	    .string(message  =  'Must be string')
-	    .boolean(message  =  'Must be boolean')
-	    .number(message  =  'Must be number')
-	    .intergerNumber(message  =  'Must be an interger number')
+	  .required(message  =  'Required')
+	  .string(message  =  'Must be string')
+	  .boolean(message  =  'Must be boolean')
+	  .number(message  =  'Must be number')
+	  .intergerNumber(message  =  'Must be an interger number')
       .inList(list, message = 'Must be in provided list')
       .array(message = 'Must be an array')
       .object(message = 'Must be an object') 
       .function(message = 'Must be a function')
       .paymentAddress(message = 'Invalid payment address') // just check string for now
       .amount(message = 'Invalid amount') // accept decimal
-	    .nanoAmount(message  =  'Invalid anno amount'); // amount must be nano (interger number and > 0)
+	  .nanoAmount(message  =  'Invalid anno amount'); // amount must be nano (interger number and > 0)
 ```
 
 

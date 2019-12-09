@@ -62,6 +62,12 @@ export function changePrivacyTokenById (tokenID) {
   __sendCommand(COMMANDS.SELECT_PRIVACY_TOKEN_BY_ID, { tokenID });
 }
 
+export function setListSupportTokenById(tokenIds) {
+  new Validator('tokenIds', tokenIds).required().array();
+
+  __sendCommand(COMMANDS.SET_LIST_SUPPORT_TOKEN_BY_ID, { tokenIds });
+}
+
 export function requestSendTx(toAddress, nanoAmount, info) {
   new Validator('toAddress', toAddress).required().paymentAddress();
   new Validator('nanoAmount', nanoAmount).required().nanoAmount();
