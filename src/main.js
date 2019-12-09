@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { onTokenInfoChange, requestSendTx, onPaymentAddressChange, ERROR_CODE,/* onSupportedTokenListChange */ } from './wallet';
+import { onTokenInfoChange, requestSendTx, onPaymentAddressChange, setSupportTokens, ERROR_CODE } from './wallet';
 import uiControl from './ui_control';
 
 let betDiceNumber;
@@ -16,6 +16,7 @@ function toNanoAmount(amount, pDecimals) {
 
 async function isServerReady() {
   try {
+    uiControl.showMessage('Contacting to your host...', { timeout: 300000 });
     const res = await axios.get(APP_ENV.SERVER_URL);
     return res.data && !!res.data.ready;
   } catch (e) {
@@ -31,9 +32,22 @@ function handleStartup(onStart) {
 }
 
 async function init() {
-  // onSupportedTokenListChange(list => {
-  //   alert(JSON.stringify(list));
-  // });
+  setTimeout(() => uiControl.animateDice(betDiceNumber), 1000);
+
+  // call this method as soon as posible, unless you will get no token info data
+  onTokenInfoChange(tInfo => {
+    const { symbol, balance, /** name, symbol, id, pDecimals, balance, nanoBalance */ } = tInfo;
+    tokenInfo = { ...tInfo };
+    uiControl.setBalanceTxt({ balance, symbol });
+    uiControl.setMaxAmountForBetAmountInput(balance);
+  });
+
+  // call this method as soon as posible, unless you will get no payment address data
+  onPaymentAddressChange(pa => {
+    paymentAddress = pa;
+  });
+
+  setSupportTokens();
 
   if (!(await isServerReady())) {
     const msg = 'Sorry, host is not ready yet, please come back later.';
@@ -43,19 +57,6 @@ async function init() {
   }
 
   uiControl.showMessage('Welcome to Dice Roll!');
-
-  setTimeout(() => uiControl.animateDice(betDiceNumber), 1000);
-
-  onTokenInfoChange(tInfo => {
-    const { symbol, balance, /** name, symbol, id, pDecimals, balance, nanoBalance */ } = tInfo;
-    tokenInfo = { ...tInfo };
-    uiControl.setBalanceTxt({ balance, symbol });
-    uiControl.setMaxAmountForBetAmountInput(balance);
-  });
-
-  onPaymentAddressChange(pa => {
-    paymentAddress = pa;
-  });
 
   uiControl.onPressDownBetAmount(() => {
     const balance = uiControl.getBetAmount();
