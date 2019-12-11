@@ -6,7 +6,6 @@ import { DATA_NAMES, COMMANDS } from './base/constants';
 
 // keep request txs id to track tx status
 const pendingRequestTxs = {};
-const store = getStore();
 
 export function onTokenInfoChange(callback) {
   setListener(DATA_NAMES.TOKEN_INFO, callback);
@@ -88,10 +87,10 @@ export function requestSendTx(toAddress, nanoAmount, info) {
 export function _setData(name, data) {
   switch(name) {
   case DATA_NAMES.TOKEN_INFO:
-    store.tokenInfo = data;
+    getStore().tokenInfo = data;
     break;
   case DATA_NAMES.PAYMENT_ADDRESS:
-    store.paymentAddress = data;
+    getStore().paymentAddress = data;
     break;
   case DATA_NAMES.TX_PENDING_RESULT:
     // data: { pendingTxId: string, data: { txID: string }, error: { code: number, message: string } }
@@ -114,7 +113,7 @@ export function _setData(name, data) {
     }
     break;
   case DATA_NAMES.LIST_TOKEN:
-    store.supportedTokenList = data;
+    getStore().supportedTokenList = data;
     break;
   default:
     return;

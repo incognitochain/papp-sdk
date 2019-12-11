@@ -28,7 +28,7 @@ function isObjectParamsEqual(obj1, obj2, fields) {
 }
 
 function createStore() {
-  return new Proxy(initStore, {
+  return new Proxy({...initStore}, {
     set: function(obj, prop, value) {
   
       let _value;
