@@ -19,6 +19,11 @@ export function onSupportedTokenListChange(callback) {
   setListener(DATA_NAMES.LIST_TOKEN, callback);
 }
 
+export function onExtraInfoChange(callback) {
+  setListener(DATA_NAMES.EXTRA_DATA, callback);
+}
+
+
 export function checkSDKCompatible() {
   if (typeof window !== 'undefined' && window.ReactNativeWebView && window.ReactNativeWebView) {
     return true;
@@ -114,6 +119,9 @@ export function _setData(name, data) {
     break;
   case DATA_NAMES.LIST_TOKEN:
     getStore().supportedTokenList = data;
+    break;
+  case DATA_NAMES.EXTRA_DATA:
+    getStore().extraData = data;
     break;
   default:
     return;

@@ -6,7 +6,10 @@ import TokenInfoModel from './models/TokenInfo';
 const initStore = {
   paymentAddress: '',
   tokenInfo: {},
-  supportedTokenList: []
+  supportedTokenList: [],
+  extraData: {
+    // userId
+  }
 };
 
 let LISTENERS = {};
@@ -75,6 +78,18 @@ function createStore() {
           listener = LISTENERS[DATA_NAMES.LIST_TOKEN];
         }
   
+        break;
+      case 'extraData':
+        new Validator('extraData', value).required().object();
+        _value = value;
+
+        // nothing has changed
+        if (isObjectParamsEqual(_value, obj[prop], [ 'userId'])) {
+          return true;
+        } else {
+          listener = LISTENERS[DATA_NAMES.EXTRA_DATA];
+        }
+
         break;
       }
      

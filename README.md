@@ -42,6 +42,8 @@ if (SDK.checkSDKCompatible()) {
 
 * `onSupportedTokenListChange(function(listToken) {})` returns list of tokens supported (from `setListSupportTokenById`).
 
+* `onExtraInfoChange(function(extraData) {})` return object of extra info, currently support `userId`.
+
 * `onTokenInfoChange(function(tokenInfo) {})` returns current token information (default PRV).
 * `changePrivacyTokenById(tokenId)` switch to a token with id = 'tokenId'
 * `requestSendTx(toAddress, nanoAmount, info)` make a request send transaction to `toAddress` (Incognito Address) with amount is `nanoAmount` (in nano), `info` (or tx message) is optional field. Users can confirm or cancel it.

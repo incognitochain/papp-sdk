@@ -2,7 +2,8 @@ export const DATA_NAMES = {
   TOKEN_INFO: 'token_info',
   PAYMENT_ADDRESS: 'payment_andress',
   TX_PENDING_RESULT: 'tx_pending_result',
-  LIST_TOKEN: 'list_token'
+  LIST_TOKEN: 'list_token',
+  EXTRA_DATA: 'extra_data'
 };
 
 export const COMMANDS = {
