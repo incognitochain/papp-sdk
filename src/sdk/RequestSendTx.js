@@ -6,6 +6,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import IconButton from '@material-ui/core/IconButton';
+import RemoveIcon from '@material-ui/icons/Remove';
 import BaseComponent from '../components/BaseComponent';
 import { showMessage } from '../components/Snackbar';
 import Copy from '../components/Copy';
@@ -17,7 +19,8 @@ class RequestSendTx extends BaseComponent {
     paymentAddress: null,
     nanoAmount: null,
     message: null,
-    tx: null
+    tx: null,
+    receivers: {}
   };
   
   handleChangeText = (field) => event =>  {
@@ -27,38 +30,83 @@ class RequestSendTx extends BaseComponent {
   }
 
   handleSendRequest = async () => {
-    const { message, nanoAmount, paymentAddress } = this.state;
+    const { message, receivers } = this.state;
+    const receiverList = Object.entries(receivers);
 
-    if (nanoAmount && paymentAddress) {
-      const tx = await requestSendTx(paymentAddress, Number(nanoAmount), message);
+    if (receiverList.length) {
+      const tx = await requestSendTx({ receivers: receiverList, info: message });
       this.setState({ tx });
     } else {
       showMessage('Payment address and nano amount are required');
     }
   }
 
+  handleAddReceiver = () => {
+    try {
+      this.setState(({ receivers, paymentAddress, nanoAmount }) => ({
+        receivers: {
+          ...receivers,
+          [paymentAddress]: Number(nanoAmount) || 0
+        },
+        paymentAddress: '',
+      }));
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  handleRemoveReceiver = (paymentAddress) => {
+    try {
+      this.setState(({ receivers }) => {
+        delete receivers[paymentAddress];
+        return { receivers };
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
   render() {
-    const { message, nanoAmount, paymentAddress, tx } = this.state;
+    const { message, nanoAmount, paymentAddress, tx, receivers } = this.state;
     const { classes } = this.props;
+    const receiverList = Object.entries(receivers);
 
     return (
       <Container className={classes.root}>
-        <TextField
-          className={classes.input}
-          id="standard-error-helper-text"
-          label="Payment Address"
-          value={paymentAddress}
-          onChange={this.handleChangeText('paymentAddress')}
-        />
-        <TextField
-          className={classes.input}
-          id="standard-error-helper-text"
-          label="Nano Amount"
-          value={nanoAmount}
-          type='number'
-          onChange={this.handleChangeText('nanoAmount')}
-          helperText='Integer number, larger than 0'
-        />
+        <div>
+          {
+            receiverList && receiverList.map(([address, nanoAmount]) => (
+              <div className={classes.receiverItemContainer}>
+                <div className={classes.receiverItemInfo}>
+                  <span className={classes.receiverAddress}>{address}</span>
+                  <span className={classes.receiverAmount}>Amount: {nanoAmount}</span>
+                </div>
+                <IconButton className={classes.removeReceiverBtn} variant="contained" onClick={() => this.handleRemoveReceiver(address)}><RemoveIcon /></IconButton>
+              </div>
+            ))
+          }
+        </div>
+        <div className={classes.addReceiverContainer}>
+          <TextField
+            className={classes.input}
+            id="standard-error-helper-text"
+            label="Payment Address"
+            value={paymentAddress}
+            onChange={this.handleChangeText('paymentAddress')}
+          />
+          <TextField
+            className={classes.input}
+            id="standard-error-helper-text"
+            label="Nano Amount"
+            value={nanoAmount}
+            type='number'
+            onChange={this.handleChangeText('nanoAmount')}
+            helperText='Integer number, larger than 0'
+          />
+          <Button variant="contained"  onClick={this.handleAddReceiver} disabled={!paymentAddress || !nanoAmount}>
+            Add Receiver
+          </Button>
+        </div>
         <TextField
           className={classes.input}
           id="standard-error-helper-text"
@@ -96,7 +144,39 @@ const styles = {
     marginBottom: 20,
     textAlign: 'initial'
   },
-  txID: {}
+  txID: {},
+  addReceiverContainer: {
+  },
+  receiverItemContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flex: 1,
+  },
+  receiverItemInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    width: 'calc(100% - 40px)'
+  },
+  receiverAddress: {
+    width: '100%',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    textAlign: 'left'
+  },
+  receiverAmount: {
+    width: '100%',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    fontSize: 12,
+    color: 'green',
+    textAlign: 'left'
+  },
+  removeReceiverBtn: {
+    width: 40,
+  },
 };
 
 export default withStyles(styles)(RequestSendTx);
