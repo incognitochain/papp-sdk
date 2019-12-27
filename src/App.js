@@ -12,6 +12,7 @@ import CheckCompatible from './sdk/CheckCompatible';
 import SetListTokenSupported from './sdk/SetListTokenSupported';
 import Constant from './sdk/Constant';
 import Documents from './sdk/Documents';
+import ExtraData from './sdk/ExtraData';
 import ChangePrivacyToken from './sdk/ChangePrivacyToken';
 import RequestSendTx from './sdk/RequestSendTx';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -63,6 +64,10 @@ class App extends Component {
         component: <ChangePrivacyToken allTokens={supportedTokens} />
       },
       {
+        label: 'Extra data',
+        component: <ExtraData />
+      },
+      {
         label: 'Make a send request',
         component: <RequestSendTx />
       },
@@ -87,7 +92,9 @@ class App extends Component {
               <Typography>{catagory.label}</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-              {catagory.component}
+              <div style={{ width: '100%'}}>
+                {catagory.component}
+              </div>
             </ExpansionPanelDetails>
           </ExpansionPanel>
         ))}
