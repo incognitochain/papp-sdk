@@ -1,7 +1,7 @@
 
   
 
-# HOW TO USE (v1.0.1)
+# HOW TO USE (v1.0.2)
 
 ## Install
 

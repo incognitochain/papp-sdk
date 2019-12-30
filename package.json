@@ -1,6 +1,6 @@
 {
   "name": "papp-sdk",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "pApp SDK",
   "main": "dist/papp-sdk.min.js",
   "license": "MIT",
