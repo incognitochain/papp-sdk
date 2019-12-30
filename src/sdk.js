@@ -72,10 +72,9 @@ export function setListSupportTokenById(tokenIds) {
   __sendCommand(COMMANDS.SET_LIST_SUPPORT_TOKEN_BY_ID, { tokenIds });
 }
 
-export function requestSendTx(toAddress, nanoAmount, info) {
-  new Validator('toAddress', toAddress).required().paymentAddress();
-  new Validator('nanoAmount', nanoAmount).required().nanoAmount();
+export function requestSendTx({ receivers, info }) {
   new Validator('info', info).string();
+  new Validator('receivers', receivers).required().receivers();
 
   const pendingTxId = _genPendingTxId();
   return new Promise((resolve, reject) => {
@@ -84,7 +83,7 @@ export function requestSendTx(toAddress, nanoAmount, info) {
     //   delete pendingRequestTxs[pendingTxId];
     //   reject(sdkError(ERROR_CODE.REQUEST_SEND_TX_TIMEOUT, 'Request send TX timeout'));
     // }, 5 * 60 * 1000);
-    __sendCommand(COMMANDS.SEND_TX, { pendingTxId, toAddress, amount: nanoAmount, info });
+    __sendCommand(COMMANDS.SEND_TX, { pendingTxId, receivers, info });
     pendingRequestTxs[pendingTxId] = { resolve, reject, /* timeout */ };
   });
 }

@@ -46,7 +46,7 @@ if (SDK.checkSDKCompatible()) {
 
 * `onTokenInfoChange(function(tokenInfo) {})` returns current token information (default PRV).
 * `changePrivacyTokenById(tokenId)` switch to a token with id = 'tokenId'
-* `requestSendTx(toAddress, nanoAmount, info)` make a request send transaction to `toAddress` (Incognito Address) with amount is `nanoAmount` (in nano), `info` (or tx message) is optional field. Users can confirm or cancel it.
+* `requestSendTx({ receivers, info })` make a request send transaction `receivers` list, `receivers` is array of `[receiver_payment_address, receiver_nano_amount]`, max 30 receivers, (i.e `receivers = [ ['abc', 100], ['xyz', 200] ]`), `info` (or tx message) is optional field. Users can confirm or cancel it.
 * `setListSupportTokenById(tokenIDs)` set list of tokens will be used in the pApp. (PRV is always available).
   ```javascript
   const { SUPPORTED_TOKEN } = SDK;
