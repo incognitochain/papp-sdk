@@ -9,7 +9,9 @@ export const DATA_NAMES = {
 export const COMMANDS = {
   SEND_TX: 'send_tx',
   SELECT_PRIVACY_TOKEN_BY_ID: 'select_privacy_token_by_id',
-  SET_LIST_SUPPORT_TOKEN_BY_ID: 'set_list_support_token_by_id'
+  SET_LIST_SUPPORT_TOKEN_BY_ID: 'set_list_support_token_by_id',
+  REQUEST_OPEN_CAMERA_QR_CODE: 'request_open_camera_qr_code',
+  ON_RECEIVE_QR_CODE: 'on_receive_qr_code'
 };
 
 export const SUPPORTED_TOKEN = {

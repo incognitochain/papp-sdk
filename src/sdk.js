@@ -88,6 +88,12 @@ export function requestSendTx({ receivers, info }) {
   });
 }
 
+
+// Post event to Client
+export function requestOpenCameraQRCode () {
+  __sendCommand(COMMANDS.REQUEST_OPEN_CAMERA_QR_CODE, {});
+}
+
 export function _setData(name, data) {
   switch(name) {
   case DATA_NAMES.TOKEN_INFO:
