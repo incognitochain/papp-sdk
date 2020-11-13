@@ -5,6 +5,7 @@ import TokenInfoModel from './models/TokenInfo';
 
 const initStore = {
   paymentAddress: '',
+  deviceId: '',
   tokenInfo: {},
   supportedTokenList: [],
   extraData: {
@@ -41,7 +42,6 @@ function createStore() {
       case 'paymentAddress':
         new Validator('paymentAddress', value).required().paymentAddress();
         _value = value;
-  
         // nothing has changed
         if (_value === obj[prop]) {
           return true;
@@ -62,6 +62,18 @@ function createStore() {
           listener = LISTENERS[DATA_NAMES.TOKEN_INFO];
         }
   
+        break;
+      case 'deviceId':
+        new Validator('deviceId', value).required().deviceId();
+        _value = value;
+  
+        // nothing has changed
+        if (_value === obj[prop]) {
+          return true;
+        } else {
+          listener = LISTENERS[DATA_NAMES.DEVICE_ID];
+        }
+
         break;
   
       case 'supportedTokenList':

@@ -59,6 +59,10 @@ class Validator {
   paymentAddress(message = 'Invalid payment address') {
     return this._onCondition(() => this.string(), message);
   }
+
+  deviceId(message = 'Invalid payment address') {
+    return this._onCondition(() => this.string(), message);
+  }
   
   /**
    * 

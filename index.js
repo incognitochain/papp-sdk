@@ -9,6 +9,7 @@ import {
   requestSendTx,
   requestOpenCameraQRCode,
   requestSingleSendTx,
+  getDeviceId,
   _setData
 } from './src/sdk';
 import { getStore, resetStore } from './src/base/store';
@@ -33,6 +34,7 @@ export default {
   requestSendTx,
   requestOpenCameraQRCode,
   requestSingleSendTx,
+  getDeviceId,
   getStore,
   resetStore,
   Validator,

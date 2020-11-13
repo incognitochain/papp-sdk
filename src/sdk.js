@@ -23,6 +23,9 @@ export function onExtraInfoChange(callback) {
   setListener(DATA_NAMES.EXTRA_DATA, callback);
 }
 
+export function getDeviceId(callback) {
+  setListener(DATA_NAMES.DEVICE_ID, callback);
+}
 
 export function checkSDKCompatible() {
   if (typeof window !== 'undefined' && window.ReactNativeWebView && window.ReactNativeWebView) {
@@ -112,6 +115,9 @@ export function _setData(name, data) {
     break;
   case DATA_NAMES.PAYMENT_ADDRESS:
     getStore().paymentAddress = data;
+    break;
+  case DATA_NAMES.DEVICE_ID:
+    getStore().deviceId = data;
     break;
   case DATA_NAMES.TX_PENDING_RESULT:
     // data: { pendingTxId: string, data: { txID: string }, error: { code: number, message: string } }

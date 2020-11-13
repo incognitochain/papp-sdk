@@ -3,7 +3,8 @@ export const DATA_NAMES = {
   PAYMENT_ADDRESS: 'payment_andress',
   TX_PENDING_RESULT: 'tx_pending_result',
   LIST_TOKEN: 'list_token',
-  EXTRA_DATA: 'extra_data'
+  EXTRA_DATA: 'extra_data',
+  DEVICE_ID: 'device_id'
 };
 
 export const COMMANDS = {
@@ -11,7 +12,7 @@ export const COMMANDS = {
   SELECT_PRIVACY_TOKEN_BY_ID: 'select_privacy_token_by_id',
   SET_LIST_SUPPORT_TOKEN_BY_ID: 'set_list_support_token_by_id',
   REQUEST_OPEN_CAMERA_QR_CODE: 'request_open_camera_qr_code',
-  ON_RECEIVE_QR_CODE: 'on_receive_qr_code'
+  ON_RECEIVE_QR_CODE: 'on_receive_qr_code',
 };
 
 export const SUPPORTED_TOKEN = {
