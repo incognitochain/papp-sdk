@@ -8,6 +8,7 @@ import {
   setListSupportTokenById,
   requestSendTx,
   requestOpenCameraQRCode,
+  requestSingleSendTx,
   _setData
 } from './src/sdk';
 import { getStore, resetStore } from './src/base/store';
@@ -31,6 +32,7 @@ export default {
   changePrivacyTokenById,
   requestSendTx,
   requestOpenCameraQRCode,
+  requestSingleSendTx,
   getStore,
   resetStore,
   Validator,

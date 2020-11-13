@@ -88,6 +88,17 @@ export function requestSendTx({ receivers, info }) {
   });
 }
 
+export function requestSingleSendTx(toAddress, nanoAmount, info) {
+  new Validator('toAddress', toAddress).required().paymentAddress();
+  new Validator('nanoAmount', nanoAmount).required().nanoAmount();
+  new Validator('info', info).string();
+
+  const pendingTxId = _genPendingTxId();
+  return new Promise((resolve, reject) => {
+    __sendCommand(COMMANDS.SINGLE_SEND_TX, { pendingTxId, toAddress, amount: nanoAmount, info });
+    pendingRequestTxs[pendingTxId] = { resolve, reject, /* timeout */ };
+  });
+}
 
 // Post event to Client
 export function requestOpenCameraQRCode () {
