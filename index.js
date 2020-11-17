@@ -10,7 +10,8 @@ import {
   requestOpenCameraQRCode,
   requestSingleSendTx,
   getDeviceId,
-  _setData
+  _setData,
+  onRequestTxsChange,
 } from './src/sdk';
 import { getStore, resetStore } from './src/base/store';
 import Validator from './src/base/validator';
@@ -19,7 +20,7 @@ import { ERROR_CODE, sdkError } from './src/base/error';
 
 if (window && !window.pappSdk) {
   window.pappSdk = {
-    _setData
+    _setData,
   };
 }
 
@@ -43,5 +44,6 @@ export default {
   ERROR_CODE,
   SUPPORTED_TOKEN,
   sdkError,
-  _setData
+  _setData,
+  onRequestTxsChange,
 };

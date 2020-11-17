@@ -3,6 +3,7 @@ import Validator from './base/validator';
 import log, { logError } from './base/log';
 // import { sdkError, ERROR_CODE } from './base/error';
 import { DATA_NAMES, COMMANDS } from './base/constants';
+import { v4 as uuidv4 } from 'uuid';
 
 // keep request txs id to track tx status
 const pendingRequestTxs = {};
@@ -27,8 +28,16 @@ export function getDeviceId(callback) {
   setListener(DATA_NAMES.DEVICE_ID, callback);
 }
 
+export const onRequestTxsChange = (callback) => {
+  setListener(DATA_NAMES.TX_PENDING_RESULT, callback);
+};
+
 export function checkSDKCompatible() {
-  if (typeof window !== 'undefined' && window.ReactNativeWebView && window.ReactNativeWebView) {
+  if (
+    typeof window !== 'undefined' &&
+    window.ReactNativeWebView &&
+    window.ReactNativeWebView
+  ) {
     return true;
   }
   return false;
@@ -37,7 +46,12 @@ export function checkSDKCompatible() {
 export function __sendCommand(command, data) {
   new Validator('__sendCommand command', command).required().string();
   new Validator('__sendCommand data', data).object();
-  new Validator('window.ReactNativeWebView.postMessage', window.ReactNativeWebView.postMessage).required().function();
+  new Validator(
+    'window.ReactNativeWebView.postMessage',
+    window.ReactNativeWebView.postMessage
+  )
+    .required()
+    .function();
 
   let payload = `${command}|${JSON.stringify(data)}`;
 
@@ -52,7 +66,7 @@ export function __sendCommand(command, data) {
 export function _genPendingTxId(_id) {
   new Validator('_id', _id).string();
 
-  let id = _id || Date.now();
+  let id = _id || uuidv4();
   // existed, must create new id
   if (pendingRequestTxs[id]) {
     id = _genPendingTxId(id + 1);
@@ -63,7 +77,7 @@ export function _genPendingTxId(_id) {
   return String(id);
 }
 
-export function changePrivacyTokenById (tokenID) {
+export function changePrivacyTokenById(tokenID) {
   new Validator('tokenID', tokenID).required().string();
 
   __sendCommand(COMMANDS.SELECT_PRIVACY_TOKEN_BY_ID, { tokenID });
@@ -87,7 +101,7 @@ export function requestSendTx({ receivers, info }) {
     //   reject(sdkError(ERROR_CODE.REQUEST_SEND_TX_TIMEOUT, 'Request send TX timeout'));
     // }, 5 * 60 * 1000);
     __sendCommand(COMMANDS.SEND_TX, { pendingTxId, receivers, info });
-    pendingRequestTxs[pendingTxId] = { resolve, reject, /* timeout */ };
+    pendingRequestTxs[pendingTxId] = { resolve, reject /* timeout */ };
   });
 }
 
@@ -98,18 +112,29 @@ export function requestSingleSendTx(toAddress, nanoAmount, info) {
 
   const pendingTxId = _genPendingTxId();
   return new Promise((resolve, reject) => {
-    __sendCommand(COMMANDS.SEND_TX, { pendingTxId, toAddress, amount: nanoAmount, info });
-    pendingRequestTxs[pendingTxId] = { resolve, reject, /* timeout */ };
+    try {
+      __sendCommand(COMMANDS.SEND_TX, {
+        pendingTxId,
+        toAddress,
+        amount: nanoAmount,
+        info,
+      });
+      resolve(pendingTxId);
+    } catch (error) {
+      reject(error);
+    } finally {
+      pendingRequestTxs[pendingTxId] = { resolve, reject /* timeout */ };
+    }
   });
 }
 
 // Post event to Client
-export function requestOpenCameraQRCode () {
+export function requestOpenCameraQRCode() {
   __sendCommand(COMMANDS.REQUEST_OPEN_CAMERA_QR_CODE, {});
 }
 
 export function _setData(name, data) {
-  switch(name) {
+  switch (name) {
   case DATA_NAMES.TOKEN_INFO:
     getStore().tokenInfo = data;
     break;
@@ -122,20 +147,32 @@ export function _setData(name, data) {
   case DATA_NAMES.TX_PENDING_RESULT:
     // data: { pendingTxId: string, data: { txID: string }, error: { code: number, message: string } }
     if (data.pendingTxId && pendingRequestTxs[data.pendingTxId]) {
-      // if (pendingRequestTxs[data.pendingTxId].timeout) {
-      //   clearTimeout(pendingRequestTxs[data.pendingTxId].timeout);
-      // }
-
+      const oldPendingRequestTxs = getStore().pendingRequestTxs;
       // success
       if (data.data) {
         pendingRequestTxs[data.pendingTxId].resolve(data.data);
+        getStore().pendingRequestTxs = {
+          ...oldPendingRequestTxs,
+          [data.pendingTxId]: {
+            tx: data.data,
+            error: null,
+          },
+        };
       }
-
       // error
       if (data.error) {
         pendingRequestTxs[data.pendingTxId].reject(data.error);
+        getStore().pendingRequestTxs = {
+          ...oldPendingRequestTxs,
+          [data.pendingTxId]: {
+            tx: null,
+            error:
+                typeof data.error === 'string'
+                  ? data.error
+                  : JSON.stringify(data.error),
+          },
+        };
       }
-
       delete pendingRequestTxs[data.pendingTxId];
     }
     break;
