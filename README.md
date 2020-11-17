@@ -91,3 +91,4 @@ const { Validator } = require('incognito-sdk);
 
 
 *This project is still in development.*
+*By Jayce Incognito;
