@@ -98,7 +98,7 @@ export function requestSingleSendTx(toAddress, nanoAmount, info) {
 
   const pendingTxId = _genPendingTxId();
   return new Promise((resolve, reject) => {
-    __sendCommand(COMMANDS.SINGLE_SEND_TX, { pendingTxId, toAddress, amount: nanoAmount, info });
+    __sendCommand(COMMANDS.SEND_TX, { pendingTxId, toAddress, amount: nanoAmount, info });
     pendingRequestTxs[pendingTxId] = { resolve, reject, /* timeout */ };
   });
 }
