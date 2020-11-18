@@ -10,6 +10,7 @@ const initStore = {
   supportedTokenList: [],
   extraData: {},
   pendingRequestTxs: {},
+  publicKey: '',
 };
 
 let LISTENERS = {};
@@ -125,6 +126,15 @@ function createStore() {
             return true;
           } else {
             listener = LISTENERS[DATA_NAMES.TX_PENDING_RESULT];
+          }
+          break;
+        case 'publicKey':
+          _value = value;
+          // nothing has changed
+          if (_value === obj[prop]) {
+            return true;
+          } else {
+            listener = LISTENERS[DATA_NAMES.PUBLIC_KEY];
           }
           break;
         default:

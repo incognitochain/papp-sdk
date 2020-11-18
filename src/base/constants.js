@@ -4,7 +4,8 @@ export const DATA_NAMES = {
   TX_PENDING_RESULT: 'tx_pending_result',
   LIST_TOKEN: 'list_token',
   EXTRA_DATA: 'extra_data',
-  DEVICE_ID: 'device_id'
+  DEVICE_ID: 'device_id',
+  PUBLIC_KEY: 'public_key',
 };
 
 export const COMMANDS = {

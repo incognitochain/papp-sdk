@@ -12,6 +12,7 @@ import {
   getDeviceId,
   _setData,
   onRequestTxsChange,
+  onPublicKeyChange,
 } from './src/sdk';
 import { getStore, resetStore } from './src/base/store';
 import Validator from './src/base/validator';
@@ -46,4 +47,5 @@ export default {
   sdkError,
   _setData,
   onRequestTxsChange,
+  onPublicKeyChange,
 };

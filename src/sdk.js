@@ -32,6 +32,10 @@ export const onRequestTxsChange = (callback) => {
   setListener(DATA_NAMES.TX_PENDING_RESULT, callback);
 };
 
+export const onPublicKeyChange = (callback) => {
+  setListener(DATA_NAMES.PUBLIC_KEY, callback);
+};
+
 export function checkSDKCompatible() {
   if (
     typeof window !== 'undefined' &&
@@ -181,6 +185,9 @@ export function _setData(name, data) {
     break;
   case DATA_NAMES.EXTRA_DATA:
     getStore().extraData = data;
+    break;
+  case DATA_NAMES.PUBLIC_KEY:
+    getStore().publicKey = data;
     break;
   default:
     return;
