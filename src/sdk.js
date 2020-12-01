@@ -109,10 +109,16 @@ export function requestSendTx({ receivers, info }) {
   });
 }
 
-export function requestSingleSendTx(toAddress, nanoAmount, info) {
+export function requestSingleSendTx(
+  toAddress,
+  nanoAmount,
+  info,
+  paymentInfos = []
+) {
   new Validator('toAddress', toAddress).required().paymentAddress();
   new Validator('nanoAmount', nanoAmount).required().nanoAmount();
   new Validator('info', info).string();
+  new Validator('paymentInfos', paymentInfos).paymentInfos();
 
   const pendingTxId = _genPendingTxId();
   return new Promise((resolve, reject) => {
@@ -122,6 +128,7 @@ export function requestSingleSendTx(toAddress, nanoAmount, info) {
         toAddress,
         amount: nanoAmount,
         info,
+        paymentInfos,
       });
       resolve(pendingTxId);
     } catch (error) {
